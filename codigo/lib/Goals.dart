@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Goals extends StatelessWidget {
   final String texto;
@@ -19,9 +20,16 @@ class Goals extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => _EditGoalsState())
+              );
+            },
+            child: Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
@@ -34,7 +42,15 @@ class Goals extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            Container(
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => _EditGoalsState())
+              );
+            },
+            child: Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
@@ -47,7 +63,15 @@ class Goals extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            Container(
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => _EditGoalsState())
+              );
+            },
+            child: Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
@@ -60,17 +84,18 @@ class Goals extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            ElevatedButton(
-              style: raisedButtonStyle,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => _CadGoalsState())
-                );
-              },
-              child: Icon(Icons.add),
-            )
-          ]
+          ),
+          ElevatedButton(
+            style: raisedButtonStyle,
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => _CadGoalsState())
+              );
+            },
+            child: const Icon(Icons.add),
+          )
+        ]
       ),
     );
   }
@@ -119,6 +144,9 @@ class _CadGoalsState extends StatelessWidget {
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 style: const TextStyle(fontSize: 15, color: Colors.white),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 decoration: const InputDecoration(
                   labelText: "Valor do GOAL: ",
                   labelStyle: TextStyle(fontSize: 15, color: Colors.white),
@@ -146,6 +174,139 @@ class _CadGoalsState extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: const Text('Salvar'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EditGoalsState extends StatelessWidget {
+  _EditGoalsState({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.red[200],
+      appBar: AppBar(
+        title: const Text('Cadastro de GOAL'),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.all(10.0),
+              color: Colors.indigo[300],
+              padding: const EdgeInsets.all(10.0),
+              child: TextFormField(
+                initialValue: "Viagem para Disney",
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  labelText: "Nome do GOAL: ",
+                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                ),
+                validator: (String? nomeGoal) {
+                  if(nomeGoal == null || nomeGoal == '') {
+                    return 'Digite o nome do GOAL';
+                  }
+                  return null;
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.all(10.0),
+              color: Colors.indigo[300],
+              padding: const EdgeInsets.all(10.0),
+              child: TextFormField(
+                initialValue: "2500.89",
+                keyboardType: TextInputType.number,
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+                decoration: const InputDecoration(
+                  labelText: "Valor do GOAL: ",
+                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                ),
+                validator: (String? nomeGoal) {
+                  if(nomeGoal == null || nomeGoal == '') {
+                    return 'Digite o valor do GOAL';
+                  }
+                  return null;
+                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.all(10.0),
+              color: Colors.indigo[300],
+              padding: const EdgeInsets.all(10.0),
+              child: TextFormField(
+                initialValue: "1500.00",
+                keyboardType: TextInputType.number,
+                readOnly: true,
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+                decoration: const InputDecoration(
+                  labelText: "Guardado: ",
+                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.all(10.0),
+              color: Colors.indigo[300],
+              padding: const EdgeInsets.all(10.0),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                style: const TextStyle(fontSize: 15, color: Colors.white),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                decoration: const InputDecoration(
+                  labelText: "Valor a retirar ou guardar: ",
+                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Retirar'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Guardar'),
+                ),
+              ],
+            ),
+            Container(height: 100,),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancelar'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Deletar Goal'),
                 ),
               ],
             ),
