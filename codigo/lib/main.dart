@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import 'Goals.dart';
 import 'Login.dart';
 import 'Sobre.dart';
+import 'Despesas.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -20,6 +21,7 @@ class _InicioState extends State<Inicio> {
   int _indiceAtual = 0;
   final List<Widget> _telas = [
     Home("Início"),
+    Despesas("Despesas"),
     Goals("Goals"),
     Sobre("Sobre"),
   ];
@@ -50,6 +52,7 @@ class _InicioState extends State<Inicio> {
         onTap: onTabTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Início",backgroundColor: Colors.black),
+          BottomNavigationBarItem(icon: Icon(Icons.money_rounded), label: "Depesas",backgroundColor: Colors.black),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: "Goals", backgroundColor: Colors.black),
           BottomNavigationBarItem(icon: Icon(Icons.accessibility), label: "Sobre", backgroundColor: Colors.black),
         ],
