@@ -8,8 +8,8 @@ class Sobre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
+      child: Center(
+        child:
           Container(
             margin: const EdgeInsets.all(10.0),
             padding: const EdgeInsets.all(5.0),
@@ -23,10 +23,11 @@ class Sobre extends StatelessWidget {
                 "\n\nGuardar dinheiro para investir na sua liberdade de escolha nunca foi uma escolha tão fácil."
                 "\n\nSara Iglesias foi quem idealizou a ideia do aplicativo, e juntamente com ela, Caio Magnani, Italo Lellis e Richbert Oliveira"
                 " desenvolveram o aplicativo.",
+              style: TextStyle(
+                fontFamily: "Times New Roman",
+              ),
             ),
           ),
-
-        ],
       ),
     );
   }
