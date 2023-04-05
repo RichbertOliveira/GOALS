@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import 'Goals.dart';
 import 'Login.dart';
 import 'Sobre.dart';
-import 'Despesas.dart';
+import 'pages/Despesas.dart';
 
 void main() {
   runApp(MaterialApp(
