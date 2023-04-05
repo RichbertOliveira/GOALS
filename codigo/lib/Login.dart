@@ -78,9 +78,6 @@ class Login extends StatelessWidget {
                         if (value!.isEmpty) {
                           return 'Por favor, digite sua senha.';
                         }
-                        if (!EmailValidator.validate(value)) {
-                          return 'Por favor, digite a senha correta.';
-                        }
                         return null;
                       },
                     ),

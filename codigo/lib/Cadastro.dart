@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:goals/Login.dart' show Login;
 import 'main.dart';
@@ -40,7 +41,86 @@ class Cadastro extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                ),//Cadastro
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: Material(
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'Name',
+                        hintText: 'Digite seu nome',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, digite seu nome.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),//Name
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: Material(
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        hintText: 'Digite seu email',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, digite um email.';
+                        }
+                        if (!EmailValidator.validate(value)) {
+                          return 'Por favor, digite um email válido.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),//Email
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: Material(
+                    child: TextFormField(
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: const InputDecoration(
+                        labelText: 'Senha',
+                        hintText: 'Digite sua senha',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, digite sua senha.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ), //Senha
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: Material(
+                    child: TextFormField(
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: const InputDecoration(
+                        labelText: 'Confirmar Senha',
+                        hintText: 'Digite sua senha',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, digite sua senha.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ), //Confirmar Senha
                 OutlinedButton(
                   style: OutlinedButton.styleFrom(
                       foregroundColor: const Color.fromRGBO(255, 127, 80, 1),
@@ -62,7 +142,7 @@ class Cadastro extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => Inicio()),
                     );
                   },
-                ), //BtnLogin
+                ), //BtnCadastro
                 TextButton(
                   child: const Text(
                     "Já tem conta? Faça o login aqui!",
