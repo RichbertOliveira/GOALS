@@ -179,7 +179,7 @@ class _EditDespesasState extends StatelessWidget {
               color: Colors.indigo[300],
               padding: const EdgeInsets.all(10.0),
               child: TextFormField(
-                initialValue: "Viagem para Disney",
+                initialValue: "Supermercado",
                 style: const TextStyle(fontSize: 15, color: Colors.white),
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
@@ -201,7 +201,7 @@ class _EditDespesasState extends StatelessWidget {
               color: Colors.indigo[300],
               padding: const EdgeInsets.all(10.0),
               child: TextFormField(
-                initialValue: "2500.89",
+                initialValue: "300.00",
                 keyboardType: TextInputType.number,
                 style: const TextStyle(fontSize: 15, color: Colors.white),
                 decoration: const InputDecoration(
@@ -217,57 +217,29 @@ class _EditDespesasState extends StatelessWidget {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
             ),
+
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
               padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                initialValue: "1500.00",
-                keyboardType: TextInputType.number,
-                readOnly: true,
-                style: const TextStyle(fontSize: 15, color: Colors.white),
-                decoration: const InputDecoration(
-                  labelText: "Guardado: ",
-                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
-                ),
+              child: DropdownButtonFormField<String>(
+                items: [DropdownMenuItem<String>(child:Text("Selecionar Frequência")),],
+                onChanged: (Object? value) {  },
               ),
             ),
+
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
               padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 15, color: Colors.white),
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                decoration: const InputDecoration(
-                  labelText: "Valor a retirar ou guardar: ",
-                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
-                ),
+              child: DropdownButtonFormField<String>(
+                items: [DropdownMenuItem<String>(child:Text("Selecionar Tipo de Despesa")),],
+                onChanged: (Object? value) {  },
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Retirar'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Guardar'),
-                ),
-              ],
-            ),
-            Container(height: 100,),
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -282,7 +254,7 @@ class _EditDespesasState extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('Deletar Goal'),
+                  child: const Text('Salvas'),
                 ),
               ],
             ),
