@@ -2,13 +2,12 @@ import "package:flutter/material.dart";
 
 import 'Goals.dart';
 import 'Login.dart';
-import 'Cadastro.dart';
 import 'Sobre.dart';
 
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Inicio(),
+    home: Login(),
   ));
 }
 
@@ -21,8 +20,6 @@ class _InicioState extends State<Inicio> {
   int _indiceAtual = 0;
   final List<Widget> _telas = [
     Home("Início"),
-    Login("Login"),
-    Cadastro("Cadastro"),
     Goals("Goals"),
     Sobre("Sobre"),
   ];
@@ -47,13 +44,12 @@ class _InicioState extends State<Inicio> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
+        backgroundColor: Colors.black,
         unselectedItemColor: Colors.white,
         selectedItemColor: Colors.yellow,
         onTap: onTabTapped,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Início",backgroundColor: Colors.black),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Login",backgroundColor: Colors.black),
-          BottomNavigationBarItem(icon: Icon(Icons.account_balance), label: "Cadastro",backgroundColor: Colors.black),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: "Goals", backgroundColor: Colors.black),
           BottomNavigationBarItem(icon: Icon(Icons.accessibility), label: "Sobre", backgroundColor: Colors.black),
         ],
