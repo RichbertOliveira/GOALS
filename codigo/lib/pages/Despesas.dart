@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:goals/components/CardDespesaDetalhes.dart';
+import 'package:goals/pages/DespesasCreate.dart';
 
 class Despesas extends StatelessWidget {
   final String texto;
@@ -23,42 +25,21 @@ class Despesas extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CardDespesaDetalhes(
+          const CardDespesaDetalhes(
             texto: "Despesas Obrigatórias Fixas",
             valor: 400.00,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => _EditDespesasState())
-              );
-            },
-          ),CardDespesaDetalhes(
+          ),
+          const CardDespesaDetalhes(
             texto: "Despesas Obrigatórias Variáveis",
             valor: 100.00,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => _EditDespesasState())
-              );
-            },
-          ),CardDespesaDetalhes(
+          ),
+          const CardDespesaDetalhes(
             texto: "Despesas Não-Obrigatórias Fixas",
             valor: 80.00,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => _EditDespesasState())
-              );
-            },
-          ),CardDespesaDetalhes(
+          ),
+          const CardDespesaDetalhes(
             texto: "Despesas Não-Obrigatórias Variáveis",
             valor: 20.00,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => _EditDespesasState())
-              );
-            },
           ),
 
           ElevatedButton(
@@ -66,95 +47,12 @@ class Despesas extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => _CadDespesasState())
+                  MaterialPageRoute(builder: (context) => DespesasCreate())
               );
             },
             child: const Icon(Icons.add),
           )
         ]
-      ),
-    );
-  }
-}
-
-
-class _CadDespesasState extends StatelessWidget {
-  _CadDespesasState({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.red[200],
-      appBar: AppBar(
-        title: const Text('Cadastro de Despesa'),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                style: const TextStyle(fontSize: 15, color: Colors.white),
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: "Nome da Despesa: ",
-                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
-                ),
-                validator: (String? nomeGoal) {
-                  if(nomeGoal == null || nomeGoal == '') {
-                    return 'Digite o nome da Despesa';
-                  }
-                  return null;
-                },
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
-              child: TextFormField(
-                keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 15, color: Colors.white),
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                decoration: const InputDecoration(
-                  labelText: "Valor da Despesa: ",
-                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
-                ),
-                validator: (String? nomeGoal) {
-                  if(nomeGoal == null || nomeGoal == '') {
-                    return 'Digite o valor da Despesa';
-                  }
-                  return null;
-                },
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Cancelar'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Salvar'),
-                ),
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }
