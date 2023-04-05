@@ -38,7 +38,7 @@ class Goals extends StatelessWidget {
               width: 600,
               child: const Text(
                 "Viagem para Paris"
-                    "\nR\$2500.00 / R\$5000.40",
+                "\nR\$2500.00 / R\$5000.40",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -59,7 +59,7 @@ class Goals extends StatelessWidget {
               width: 600,
               child: const Text(
                 "Viagem para Disney"
-                    "\nR\$1500.00 / R\$2500.89",
+                "\nR\$1500.00 / R\$2500.89",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -80,7 +80,7 @@ class Goals extends StatelessWidget {
               width: 600,
               child: const Text(
                 "Comprar geladeira nova"
-                    "\nR\$200.00 / R\$2000.00",
+                "\nR\$200.00 / R\$2000.00",
                 textAlign: TextAlign.center,
               ),
             ),

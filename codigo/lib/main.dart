@@ -20,7 +20,6 @@ class Inicio extends StatefulWidget {
 class _InicioState extends State<Inicio> {
   int _indiceAtual = 0;
   final List<Widget> _telas = [
-    Home("Início"),
     Despesas("Despesas"),
     Goals("Goals"),
     Sobre("Sobre"),
@@ -36,6 +35,7 @@ class _InicioState extends State<Inicio> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.red[350],
         title: Center (
           child: Text("GOALS"),
         ),
@@ -51,26 +51,10 @@ class _InicioState extends State<Inicio> {
         selectedItemColor: Colors.yellow,
         onTap: onTabTapped,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Início",backgroundColor: Colors.black),
           BottomNavigationBarItem(icon: Icon(Icons.money_rounded), label: "Depesas",backgroundColor: Colors.black),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: "Goals", backgroundColor: Colors.black),
-          BottomNavigationBarItem(icon: Icon(Icons.accessibility), label: "Sobre", backgroundColor: Colors.black),
+          BottomNavigationBarItem(icon: Icon(Icons.announcement), label: "Sobre", backgroundColor: Colors.black),
         ],
-      ),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  final String texto;
-
-  Home(this.texto);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text(texto),
       ),
     );
   }
