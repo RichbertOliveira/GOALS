@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:goals/components/CardDespesaDetalhes.dart';
 
 class Despesas extends StatelessWidget {
   final String texto;
@@ -22,69 +23,44 @@ class Despesas extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          GestureDetector(
+          CardDespesaDetalhes(
+            texto: "Despesas Obrigatórias Fixas",
+            valor: 400.00,
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => _EditDespesasState())
               );
             },
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
-              height: 100,
-              width: 600,
-              child: const Text(
-                "Viagem para Paris"
-                    "\nR\$2500.00 / R\$5000.40",
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          GestureDetector(
+          ),CardDespesaDetalhes(
+            texto: "Despesas Obrigatórias Variáveis",
+            valor: 100.00,
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => _EditDespesasState())
               );
             },
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
-              height: 100,
-              width: 600,
-              child: const Text(
-                "Viagem para Disney"
-                    "\nR\$1500.00 / R\$2500.89",
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          GestureDetector(
+          ),CardDespesaDetalhes(
+            texto: "Despesas Não-Obrigatórias Fixas",
+            valor: 80.00,
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => _EditDespesasState())
               );
             },
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
-              height: 100,
-              width: 600,
-              child: const Text(
-                "Comprar geladeira nova"
-                    "\nR\$200.00 / R\$2000.00",
-                textAlign: TextAlign.center,
-              ),
-            ),
+          ),CardDespesaDetalhes(
+            texto: "Despesas Não-Obrigatórias Variáveis",
+            valor: 20.00,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => _EditDespesasState())
+              );
+            },
           ),
+
           ElevatedButton(
             style: raisedButtonStyle,
             onPressed: () {
