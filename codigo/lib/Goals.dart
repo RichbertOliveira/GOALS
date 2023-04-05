@@ -16,6 +16,7 @@ class Goals extends StatelessWidget {
     ),
   );
 
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -38,7 +39,7 @@ class Goals extends StatelessWidget {
               width: 600,
               child: const Text(
                 "Viagem para Paris"
-                    "\nR\$2500.00 / R\$5000.40",
+                "\nR\$2500.00 / R\$5000.40",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -59,7 +60,7 @@ class Goals extends StatelessWidget {
               width: 600,
               child: const Text(
                 "Viagem para Disney"
-                    "\nR\$1500.00 / R\$2500.89",
+                "\nR\$1500.00 / R\$2500.89",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -75,12 +76,11 @@ class Goals extends StatelessWidget {
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
               height: 100,
               width: 600,
               child: const Text(
                 "Comprar geladeira nova"
-                    "\nR\$200.00 / R\$2000.00",
+                "\nR\$200.00 / R\$2000.00",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -119,13 +119,13 @@ class _CadGoalsState extends StatelessWidget {
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
               child: TextFormField(
                 style: const TextStyle(fontSize: 15, color: Colors.white),
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   labelText: "Nome do GOAL: ",
                   labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  border: OutlineInputBorder(),
                 ),
                 validator: (String? nomeGoal) {
                   if(nomeGoal == null || nomeGoal == '') {
@@ -140,7 +140,6 @@ class _CadGoalsState extends StatelessWidget {
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 style: const TextStyle(fontSize: 15, color: Colors.white),
@@ -150,6 +149,7 @@ class _CadGoalsState extends StatelessWidget {
                 decoration: const InputDecoration(
                   labelText: "Valor do GOAL: ",
                   labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  border: OutlineInputBorder(),
                 ),
                 validator: (String? nomeGoal) {
                   if(nomeGoal == null || nomeGoal == '') {
@@ -201,7 +201,6 @@ class _EditGoalsState extends StatelessWidget {
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
               child: TextFormField(
                 initialValue: "Viagem para Disney",
                 style: const TextStyle(fontSize: 15, color: Colors.white),
@@ -209,6 +208,7 @@ class _EditGoalsState extends StatelessWidget {
                 decoration: const InputDecoration(
                   labelText: "Nome do GOAL: ",
                   labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  border: OutlineInputBorder(),
                 ),
                 validator: (String? nomeGoal) {
                   if(nomeGoal == null || nomeGoal == '') {
@@ -223,7 +223,6 @@ class _EditGoalsState extends StatelessWidget {
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
               child: TextFormField(
                 initialValue: "2500.89",
                 keyboardType: TextInputType.number,
@@ -231,6 +230,7 @@ class _EditGoalsState extends StatelessWidget {
                 decoration: const InputDecoration(
                   labelText: "Valor do GOAL: ",
                   labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  border: OutlineInputBorder(),
                 ),
                 validator: (String? nomeGoal) {
                   if(nomeGoal == null || nomeGoal == '') {
@@ -245,7 +245,6 @@ class _EditGoalsState extends StatelessWidget {
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
               child: TextFormField(
                 initialValue: "1500.00",
                 keyboardType: TextInputType.number,
@@ -254,6 +253,7 @@ class _EditGoalsState extends StatelessWidget {
                 decoration: const InputDecoration(
                   labelText: "Guardado: ",
                   labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),
@@ -261,7 +261,6 @@ class _EditGoalsState extends StatelessWidget {
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
               color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 style: const TextStyle(fontSize: 15, color: Colors.white),
@@ -271,6 +270,7 @@ class _EditGoalsState extends StatelessWidget {
                 decoration: const InputDecoration(
                   labelText: "Valor a retirar ou guardar: ",
                   labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),

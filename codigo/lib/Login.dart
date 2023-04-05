@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:goals/main.dart';
+import 'package:email_validator/email_validator.dart';
 
+import 'package:goals/main.dart';
 import 'Cadastro.dart';
 
 class Login extends StatelessWidget {
@@ -13,24 +14,6 @@ class Login extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
       child: Column(
         children: [
-          // TextFormField(
-          //   decoration: InputDecoration(
-          //     labelText: 'Email',
-          //     filled: true,
-          //     fillColor: Colors.grey[200],
-          //     border: const OutlineInputBorder(),
-          //     prefixIcon: const Icon(Icons.email),
-          //   ),
-          // ), //Email
-          // TextFormField(
-          //   decoration: InputDecoration(
-          //     labelText: 'Senha',
-          //     filled: true,
-          //     fillColor: Colors.grey[200],
-          //     border: const OutlineInputBorder(),
-          //     prefixIcon: const Icon(Icons.email),
-          //   ),
-          // ), //Senha
           const Center(
             child: Text(
               "Goals",
@@ -59,28 +42,75 @@ class Login extends StatelessWidget {
                     ),
                   ),
                 ),
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      foregroundColor: Color.fromRGBO(255, 127, 80, 1),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(
-                            color: Color.fromRGBO(255, 127, 80, 1),
-                          ))),
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 127, 80, 1),
-                      fontSize: 16,
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: Material(
+                    child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        hintText: 'Digite seu email',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, digite um email.';
+                        }
+                        if (!EmailValidator.validate(value)) {
+                          return 'Por favor, digite um email válido.';
+                        }
+                        return null;
+                      },
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Inicio()),
-                    );
-                  },
-                ), //BtnLogin
+                ), //Email
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: Material(
+                    child: TextFormField(
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: const InputDecoration(
+                        labelText: 'Senha',
+                        hintText: 'Digite sua senha',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, digite sua senha.';
+                        }
+                        if (!EmailValidator.validate(value)) {
+                          return 'Por favor, digite a senha correta.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ), //Senha
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        foregroundColor: const Color.fromRGBO(255, 127, 80, 1),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: const BorderSide(
+                              color: Color.fromRGBO(255, 127, 80, 1),
+                            ))),
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Color.fromRGBO(255, 127, 80, 1),
+                        fontSize: 16,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Inicio()),
+                      );
+                    },
+                  ),
+                ),//BtnLogin
                 TextButton(
                   child: const Text(
                     "Não tem conta? Crie sua conta aqui!",
