@@ -1,12 +1,15 @@
 import "package:flutter/material.dart";
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 import 'Goals.dart';
 import 'Login.dart';
 import 'Sobre.dart';
 import 'pages/Despesas.dart';
+import 'database/DbFile.dart';
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Login(),
   ));
@@ -19,6 +22,8 @@ class Inicio extends StatefulWidget {
 
 class _InicioState extends State<Inicio> {
   int _indiceAtual = 0;
+  final DbFile dbFile = new DbFile();
+
   final List<Widget> _telas = [
     Despesas("Despesas"),
     Goals("Goals"),
@@ -36,13 +41,20 @@ class _InicioState extends State<Inicio> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red[350],
-        title: Center (
+        title: const Center (
           child: Text("GOALS"),
         ),
       ),
       backgroundColor: Colors.red[200],
       body: Container(
-        child: _telas[_indiceAtual],
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: ()=> dbFile.findDatabase(),
+            ),
+            _telas[_indiceAtual],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,

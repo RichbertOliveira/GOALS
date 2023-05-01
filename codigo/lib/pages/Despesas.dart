@@ -102,6 +102,9 @@ class _EditDespesasState extends StatelessWidget {
                 initialValue: "300.00",
                 keyboardType: TextInputType.number,
                 style: const TextStyle(fontSize: 15, color: Colors.white),
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 decoration: const InputDecoration(
                   labelText: "Valor da Despesa: ",
                   labelStyle: TextStyle(fontSize: 15, color: Colors.white),
