@@ -24,22 +24,25 @@ class _DespesasState extends State<Despesas> {
   final DbFile dbFile = DbFile();
   final ExpensesDb expensesFile = ExpensesDb();
 
-  @override
-  void initState() {
-    super.initState();
-    loadExpensesValues();
-  }
 
   double fixedMadatory = 0.0;
   double variableMandatory = 0.0;
   double fixedNonMandatory = 0.0;
   double variableNonMandatory = 0.0;
 
-  void loadExpensesValues() async {
-    findExpensesValue('').then((value) => setState(() {
-      fixedMadatory = value;
-    }));
+  @override
+  initState(){
+    super.initState();
+    loadExpensesValues();
+  }
 
+  Future<List<double>> loadExpensesValues() async {
+    findExpensesValue('').then((value) => setState((){fixedMadatory = value;}));
+    findExpensesValue('').then((value) => setState((){variableMandatory = value;}));
+    findExpensesValue('').then((value) => setState((){fixedNonMandatory = value;}));
+    findExpensesValue('').then((value) => setState((){variableNonMandatory = value;}));
+
+    return [fixedMadatory, variableMandatory, fixedNonMandatory, variableNonMandatory,];
   }
 
   Future<double> findExpensesValue(String type) async {
@@ -70,28 +73,25 @@ class _DespesasState extends State<Despesas> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<double>(
-      future: findExpensesValue('FM'),
-      builder: (context, snapshot) {
-        return Center(
+    return Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               CardDespesaDetalhes(
                 texto: "Despesas Obrigatórias Fixas",
-                valor: snapshot.data == null? 0 : snapshot.data!,
+                valor: fixedMadatory,
               ),
-              const CardDespesaDetalhes(
+              CardDespesaDetalhes(
                 texto: "Despesas Obrigatórias Variáveis",
-                valor: 100.00,
+                valor: variableMandatory,
               ),
-              const CardDespesaDetalhes(
+              CardDespesaDetalhes(
                 texto: "Despesas Não-Obrigatórias Fixas",
-                valor: 80.00,
+                valor: fixedNonMandatory,
               ),
-              const CardDespesaDetalhes(
+              CardDespesaDetalhes(
                 texto: "Despesas Não-Obrigatórias Variáveis",
-                valor: 20.00,
+                valor: variableNonMandatory,
               ),
               ElevatedButton(
                 style: raisedButtonStyle,
@@ -106,8 +106,6 @@ class _DespesasState extends State<Despesas> {
             ]
           ),
         );
-      }
-    );
   }
 }
 

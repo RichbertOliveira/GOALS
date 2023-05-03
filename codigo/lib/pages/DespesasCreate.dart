@@ -7,6 +7,8 @@ import 'package:path/path.dart' as Path;
 
 import '../database/DbFile.dart';
 import '../database/ExpensesDb.dart';
+import '../main.dart';
+import 'Despesas.dart';
 
 class DespesasCreate extends StatefulWidget {
   @override
@@ -25,8 +27,12 @@ class _DespesasCreateState extends State<DespesasCreate> {
     final ExpensesDb expensesFile = ExpensesDb();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    var prevExpenses = expensesFile.findAllExpensesByType('', int.parse(prefs.getString('userId')!), database);
+
+
+
     var expense = Expenses(
-      id: 0,
+      id: expensesFile.findLastId(database),
       name: name,
       value: value,
       frequency: frequency,
@@ -36,7 +42,10 @@ class _DespesasCreateState extends State<DespesasCreate> {
 
     expensesFile.insertExpenses(expense, database);
 
-    Navigator.pop(context);
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Inicio())
+    );
   }
 
   @override

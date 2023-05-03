@@ -34,16 +34,18 @@ class _CadastroState extends State<Cadastro> {
       return;
     }
 
+    final DbFile dbFile = DbFile();
+    Database database = await dbFile.findDatabase();
+    final UsersDb usersFile = UsersDb();
+
     var user = User(
-      id: 0,
+      id: usersFile.findLastId(database),
       name: name,
       email: email,
       password: password,
     );
 
-    Database database = await dbFile.findDatabase();
-
-    var retorno = usersDb.insertUser(user, database);
+    usersDb.insertUser(user, database);
 
     Navigator.pop(context);
   }

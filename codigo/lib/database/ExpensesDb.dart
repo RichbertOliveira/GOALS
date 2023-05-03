@@ -46,4 +46,10 @@ class ExpensesDb {
 
     return expenses;
   }
+
+  findLastId(Database database) async {
+    var idList = await database.rawQuery("SELECT MAX(id) FROM expenses");
+
+    return idList.elementAt(0);
+  }
 }

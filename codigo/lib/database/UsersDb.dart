@@ -37,4 +37,10 @@ class UsersDb {
 
     return returnDelete;
   }
+
+  findLastId(Database database) async {
+    var idList = await database.rawQuery("SELECT MAX(id) FROM users");
+
+    return idList.elementAt(0);
+  }
 }
