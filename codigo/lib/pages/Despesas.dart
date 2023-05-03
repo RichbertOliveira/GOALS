@@ -11,34 +11,49 @@ import '../database/ExpensesDb.dart';
 import '../model/Expenses.dart';
 import '../model/User.dart';
 
-class Despesas extends StatelessWidget {
+class Despesas extends StatefulWidget {
+  String despesas = 'despesas';
+
+  Despesas({Key? key, required this.despesas}): super(key: key);
+
+  @override
+  State<Despesas> createState() => _DespesasState();
+}
+
+class _DespesasState extends State<Despesas> {
   final DbFile dbFile = DbFile();
   final ExpensesDb expensesFile = ExpensesDb();
+
+  @override
+  void initState() {
+    super.initState();
+    loadExpensesValues();
+  }
+
   double fixedMadatory = 0.0;
   double variableMandatory = 0.0;
   double fixedNonMandatory = 0.0;
   double variableNonMandatory = 0.0;
 
   void loadExpensesValues() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Database database = await dbFile.findDatabase();
-    var fm = findExpensesValue('FM', database, prefs);
-    var vm = findExpensesValue('VM', database, prefs);
-    var fnm = findExpensesValue('FNM', database, prefs);
-    var vnm = findExpensesValue('VNM', database, prefs);
+    findExpensesValue('').then((value) => setState(() {
+      fixedMadatory = value;
+    }));
 
-    //colocar o valor que foi retornado em cada widget de valores
   }
 
-  Future<double> findExpensesValue(String type, Database db, SharedPreferences prefs) async {
+  Future<double> findExpensesValue(String type) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    Database database = await dbFile.findDatabase();
+
     var userId = prefs.getString('userId');
     var totalValue = 0.0;
 
-    var expenses = expensesFile.findAllExpensesByType(type, int.parse(userId!), db);
-
+    var expenses = expensesFile.findAllExpensesByType(type, int.parse(userId!), database);
+    print(expenses);
     expenses.forEach((Expenses expense) => totalValue += expense.value);
 
-    return totalValue;
+    return totalValue + 1;
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
@@ -53,39 +68,44 @@ class Despesas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const CardDespesaDetalhes(
-            texto: "Despesas Obrigatórias Fixas",
-            valor: 100.00,
+    return FutureBuilder<double>(
+      future: findExpensesValue('FM'),
+      builder: (context, snapshot) {
+        print(snapshot.data);
+        return Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CardDespesaDetalhes(
+                texto: "Despesas Obrigatórias Fixas",
+                valor: snapshot.data == null? 0 : snapshot.data!,
+              ),
+              const CardDespesaDetalhes(
+                texto: "Despesas Obrigatórias Variáveis",
+                valor: 100.00,
+              ),
+              const CardDespesaDetalhes(
+                texto: "Despesas Não-Obrigatórias Fixas",
+                valor: 80.00,
+              ),
+              const CardDespesaDetalhes(
+                texto: "Despesas Não-Obrigatórias Variáveis",
+                valor: 20.00,
+              ),
+              ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DespesasCreate())
+                  );
+                },
+                child: const Icon(Icons.add),
+              )
+            ]
           ),
-          const CardDespesaDetalhes(
-            texto: "Despesas Obrigatórias Variáveis",
-            valor: 100.00,
-          ),
-          const CardDespesaDetalhes(
-            texto: "Despesas Não-Obrigatórias Fixas",
-            valor: 80.00,
-          ),
-          const CardDespesaDetalhes(
-            texto: "Despesas Não-Obrigatórias Variáveis",
-            valor: 20.00,
-          ),
-
-          ElevatedButton(
-            style: raisedButtonStyle,
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DespesasCreate())
-              );
-            },
-            child: const Icon(Icons.add),
-          )
-        ]
-      ),
+        );
+      }
     );
   }
 }

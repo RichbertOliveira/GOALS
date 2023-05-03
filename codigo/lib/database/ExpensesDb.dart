@@ -6,11 +6,11 @@ import '../model/Expenses.dart';
 import '../model/User.dart';
 
 class ExpensesDb {
-  insertExpenses(Map<String, dynamic> expenses, Database db) async {
+  insertExpenses(Expenses expense, Database db) async {
 
     int returnInsert = await db.insert(
         "expenses",
-        expenses
+        expense.toMap()
     );
 
     return returnInsert;
@@ -41,11 +41,9 @@ class ExpensesDb {
 
   findAllExpensesByType(String type, int userId, Database database) async {
     final List<Map<String, dynamic>> expenses = await database.query(
-      'user',
-      where: 'userId = ? AND type = ?',
-      whereArgs: [userId, type],
+      'expenses',
     );
-
+    print(expenses);
     return expenses;
   }
 }

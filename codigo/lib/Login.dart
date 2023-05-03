@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
     );
 
     if(users.length > 0) {
-      var user = prefs.setString('userId', users[0]['id']);
+      var user = prefs.setString('userId', users[0]['id'].toString());
 
       Navigator.push(
         context,

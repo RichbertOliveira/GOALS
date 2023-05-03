@@ -4,6 +4,7 @@ class Expenses {
   final double value;
   final String type;
   final int userId;
+  final String frequency;
 
   const Expenses({
     required this.id,
@@ -11,6 +12,7 @@ class Expenses {
     required this.value,
     required this.type,
     required this.userId,
+    required this.frequency,
   });
 
   Map<String, dynamic> toMap() {
@@ -20,11 +22,12 @@ class Expenses {
       'value': value,
       'type': type,
       'userId': userId,
+      'frequency': frequency,
     };
   }
 
   @override
   String toString() {
-    return 'User{id: $id, name: $name, value: $value, type: $type, userId: $userId}';
+    return 'User{id: $id, name: $name, value: $value, type: $type, userId: $userId, frequency: $frequency}';
   }
 }

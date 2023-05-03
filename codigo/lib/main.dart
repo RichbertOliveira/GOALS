@@ -25,7 +25,7 @@ class _InicioState extends State<Inicio> {
   final DbFile dbFile = new DbFile();
 
   final List<Widget> _telas = [
-    Despesas(),
+    Despesas(despesas: "Despesas"),
     Goals("Goals"),
     Sobre("Sobre"),
   ];

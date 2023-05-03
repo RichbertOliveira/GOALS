@@ -14,7 +14,10 @@ class DbFile {
           String sql = "CREATE TABLE user ("
               "id INTEGER PRIMARY KEY AUTOINCREMENT,"
               "name VARCHAR, email VARCHAR, password VARCHAR"
-              ")";
+              ");"
+              "CREATE TABLE expenses ("
+              "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+              "name VARCHAR, value DOUBLE, type VARCHAR, userId INTEGER)";
           db.execute(sql);
         }
     );
