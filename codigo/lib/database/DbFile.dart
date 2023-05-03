@@ -11,12 +11,15 @@ class DbFile {
         localBD,
         version: 1,
         onCreate: (db, dbVersion) {
-          String sql = "CREATE TABLE usuarios ("
+          String sql = "CREATE TABLE user ("
               "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-              "nome VARCHAR, email VARCHAR, senha VARCHAR)";
+              "name VARCHAR, email VARCHAR, password VARCHAR"
+              ")";
           db.execute(sql);
         }
     );
+
+    return database;
   }
 
   saveDatabase() async {

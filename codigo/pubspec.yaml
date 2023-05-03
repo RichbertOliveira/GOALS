@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   super_bottom_navigation_bar: ^1.0.0
   sqflite: ^2.2.7
+  shared_preferences: ^2.1.0
 
 dev_dependencies:
   flutter_test:

@@ -1,11 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as Path;
 
 import 'package:goals/main.dart';
 import 'Cadastro.dart';
+import 'database/DbFile.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final DbFile dbFile = DbFile();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void Login(String? email, String? password) async {
+    if(email == null || email == '') {
+      return;
+    }
+    if(password == null || password == '') {
+      return;
+    }
+
+    Database database = await dbFile.findDatabase();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final List<Map<String, dynamic>> users = await database.query(
+      'user',
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
+    );
+
+    if(users.length > 0) {
+      var user = prefs.setString('userId', users[0]['id']);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Inicio()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +92,7 @@ class Login extends StatelessWidget {
                   child: Material(
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
+                      controller: emailController,
                       decoration: const InputDecoration(
                         labelText: 'Email',
                         hintText: 'Digite seu email',
@@ -69,6 +115,7 @@ class Login extends StatelessWidget {
                   child: Material(
                     child: TextFormField(
                       keyboardType: TextInputType.visiblePassword,
+                      controller: passwordController,
                       decoration: const InputDecoration(
                         labelText: 'Senha',
                         hintText: 'Digite sua senha',
@@ -101,10 +148,7 @@ class Login extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Inicio()),
-                      );
+                      Login(emailController.text, passwordController.text);
                     },
                   ),
                 ),//BtnLogin
@@ -121,7 +165,7 @@ class Login extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const Cadastro()),
+                      MaterialPageRoute(builder: (context) => Cadastro()),
                     );
                   },
                 ), //Cadastrar

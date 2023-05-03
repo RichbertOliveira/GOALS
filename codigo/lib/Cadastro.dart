@@ -2,10 +2,51 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:goals/Login.dart' show Login;
 import 'main.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as Path;
 
-class Cadastro extends StatelessWidget {
 
-  const Cadastro({super.key});
+import 'database/DbFile.dart';
+import 'database/UsersDb.dart';
+import 'model/User.dart';
+
+class Cadastro extends StatefulWidget {
+  @override
+  _CadastroState createState() => _CadastroState();
+}
+
+class _CadastroState extends State<Cadastro> {
+  final DbFile dbFile = DbFile();
+  final UsersDb usersDb = UsersDb();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final passwordCheckController = TextEditingController();
+
+  void cadastrar(String? name, String? email, String? password, String? passwordCheck) async {
+    if(name == null || name == '') {
+      return;
+    }
+    if(email == null || email == '') {
+      return;
+    }
+    if(password == null || password == '') {
+      return;
+    }
+
+    var user = User(
+      id: 0,
+      name: name,
+      email: email,
+      password: password,
+    );
+
+    Database database = await dbFile.findDatabase();
+
+    var retorno = usersDb.insertUser(user, database);
+
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +88,9 @@ class Cadastro extends StatelessWidget {
                   child: Material(
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
+                      controller: nameController,
                       decoration: const InputDecoration(
-                        labelText: 'Name',
+                        labelText: 'Nome',
                         hintText: 'Digite seu nome',
                         border: OutlineInputBorder(),
                       ),
@@ -66,6 +108,7 @@ class Cadastro extends StatelessWidget {
                   child: Material(
                     child: TextFormField(
                       keyboardType: TextInputType.emailAddress,
+                      controller: emailController,
                       decoration: const InputDecoration(
                         labelText: 'Email',
                         hintText: 'Digite seu email',
@@ -88,6 +131,7 @@ class Cadastro extends StatelessWidget {
                   child: Material(
                     child: TextFormField(
                       keyboardType: TextInputType.visiblePassword,
+                      controller: passwordController,
                       decoration: const InputDecoration(
                         labelText: 'Senha',
                         hintText: 'Digite sua senha',
@@ -107,6 +151,7 @@ class Cadastro extends StatelessWidget {
                   child: Material(
                     child: TextFormField(
                       keyboardType: TextInputType.visiblePassword,
+                      controller: passwordCheckController,
                       decoration: const InputDecoration(
                         labelText: 'Confirmar Senha',
                         hintText: 'Digite sua senha',
@@ -137,10 +182,7 @@ class Cadastro extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Inicio()),
-                    );
+                    cadastrar(nameController.text, emailController.text, passwordController.text, passwordCheckController.text);
                   },
                 ), //BtnCadastro
                 TextButton(
@@ -157,7 +199,7 @@ class Cadastro extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Login()),
+                          builder: (context) => Login()),
                     );
                   },
                 ), //Cadastrar

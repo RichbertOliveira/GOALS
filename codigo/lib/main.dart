@@ -9,7 +9,7 @@ import 'pages/Despesas.dart';
 import 'database/DbFile.dart';
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Login(),
   ));
@@ -25,7 +25,7 @@ class _InicioState extends State<Inicio> {
   final DbFile dbFile = new DbFile();
 
   final List<Widget> _telas = [
-    Despesas("Despesas"),
+    Despesas(),
     Goals("Goals"),
     Sobre("Sobre"),
   ];
@@ -49,9 +49,6 @@ class _InicioState extends State<Inicio> {
       body: Container(
         child: Column(
           children: [
-            GestureDetector(
-              onTap: ()=> dbFile.findDatabase(),
-            ),
             _telas[_indiceAtual],
           ],
         ),

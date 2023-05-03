@@ -2,22 +2,24 @@ import "package:flutter/material.dart";
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import '../model/User.dart';
+
 class UsersDb {
-  insertUser(Map<String, dynamic> user, Database db) async {
+  insertUser(User user, Database db) async {
 
     int returnInsert = await db.insert(
         "user",
-        user
+        user.toMap()
     );
 
     return returnInsert;
   }
 
-  updateUser(int id, Map<String, dynamic> user, Database db) async {
+  updateUser(int id, User user, Database db) async {
 
     int returnSave = await db.update(
         "user",
-        user,
+        user.toMap(),
         where: "id = ?",
         whereArgs: [id]
     );

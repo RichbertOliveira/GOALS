@@ -2,6 +2,9 @@ import "package:flutter/material.dart";
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import '../model/Expenses.dart';
+import '../model/User.dart';
+
 class ExpensesDb {
   insertExpenses(Map<String, dynamic> expenses, Database db) async {
 
@@ -34,5 +37,15 @@ class ExpensesDb {
     );
 
     return returnDelete;
+  }
+
+  findAllExpensesByType(String type, int userId, Database database) async {
+    final List<Map<String, dynamic>> expenses = await database.query(
+      'user',
+      where: 'userId = ? AND type = ?',
+      whereArgs: [userId, type],
+    );
+
+    return expenses;
   }
 }
