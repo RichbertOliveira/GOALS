@@ -43,7 +43,7 @@ class ExpensesDb {
     final List<Map<String, dynamic>> expenses = await database.query(
       'expenses',
     );
-    print(expenses);
+
     return expenses;
   }
 }

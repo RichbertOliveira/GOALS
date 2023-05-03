@@ -49,11 +49,13 @@ class _DespesasState extends State<Despesas> {
     var userId = prefs.getString('userId');
     var totalValue = 0.0;
 
-    var expenses = expensesFile.findAllExpensesByType(type, int.parse(userId!), database);
-    print(expenses);
-    expenses.forEach((Expenses expense) => totalValue += expense.value);
+    var expenses = await expensesFile.findAllExpensesByType(type, int.parse(userId!), database);
 
-    return totalValue + 1;
+    for(var i = 0; i < expenses.length; i++) {
+      totalValue += expenses[i]['value'];
+    }
+
+    return totalValue;
   }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
@@ -71,7 +73,6 @@ class _DespesasState extends State<Despesas> {
     return FutureBuilder<double>(
       future: findExpensesValue('FM'),
       builder: (context, snapshot) {
-        print(snapshot.data);
         return Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
