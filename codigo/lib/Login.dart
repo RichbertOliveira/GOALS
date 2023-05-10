@@ -1,177 +1,153 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' as Path;
+import 'package:goals/database/DatabaseHelper.dart';
 
 import 'package:goals/main.dart';
 import 'Cadastro.dart';
-import 'database/DbFile.dart';
+import 'database/UserDAO.dart';
+import 'model/User.dart';
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  final DbFile dbFile = DbFile();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String _email = "";
+  String _password = "";
+  String _mensageError = "";
 
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  void Login(String? email, String? password) async {
-    if(email == null || email == '') {
-      return;
-    }
-    if(password == null || password == '') {
-      return;
-    }
-
-    Database database = await dbFile.findDatabase();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final List<Map<String, dynamic>> users = await database.query(
-      'user',
-      where: 'email = ? AND password = ?',
-      whereArgs: [email, password],
-    );
-
-    if(users.length > 0) {
-      var user = prefs.setString('userId', users[0]['id'].toString());
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Inicio()),
-      );
+  void _formSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      User? user = await UserDAO.getUserByEmail(_email);
+      if (user == null) {
+        setState(() {
+          _mensageError = "Verifique seu e-mail e senha";
+        });
+      } else if (user.email == _email && user.password == _password) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Inicio()),
+        );
+      }
+    } else {
+      setState(() {
+        _mensageError = "Verifique seu e-mail e senha";
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
-      child: Column(
+    return Material(
+      child: ListView(
         children: [
           const Center(
             child: Text(
               "Goals",
               style: TextStyle(
-                color: Colors.black,
-                fontSize: 32,
-                decoration: TextDecoration.none,
+                fontSize: 42,
               ),
             ),
-          ), //Header
+          ),
           Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 32, 0, 0),
-                  child: const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                        decoration: TextDecoration.none,
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                  child: Material(
-                    child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'Digite seu email',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Por favor, digite um email.';
-                        }
-                        if (!EmailValidator.validate(value)) {
-                          return 'Por favor, digite um email válido.';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ), //Email
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                  child: Material(
-                    child: TextFormField(
-                      keyboardType: TextInputType.visiblePassword,
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                        labelText: 'Senha',
-                        hintText: 'Digite sua senha',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Por favor, digite sua senha.';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                ), //Senha
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 16, 0, 0),
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                        foregroundColor: const Color.fromRGBO(255, 127, 80, 1),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: const BorderSide(
-                              color: Color.fromRGBO(255, 127, 80, 1),
-                            ))),
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Color.fromRGBO(255, 127, 80, 1),
-                        fontSize: 16,
-                      ),
-                    ),
-                    onPressed: () {
-                      Login(emailController.text, passwordController.text);
-                    },
-                  ),
-                ),//BtnLogin
-                TextButton(
-                  child: const Text(
-                    "Não tem conta? Crie sua conta aqui!",
+            margin: const EdgeInsets.fromLTRB(48, 18, 48, 18),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Login",
+                    textAlign: TextAlign.left,
                     style: TextStyle(
-                      color: Color.fromRGBO(255, 127, 80, 1),
-                      decoration: TextDecoration.underline,
-                      decorationStyle: TextDecorationStyle.solid,
-                      fontSize: 16,
+                      fontSize: 24,
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Cadastro()),
-                    );
-                  },
-                ), //Cadastrar
-              ],
+                  const SizedBox(height: 18),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'E-mail',
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!EmailValidator.validate(value)) {
+                        return 'Please enter a valid email address';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _email = value!;
+                    },
+                  ), // Email
+                  const SizedBox(height: 18),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                    ),
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _password = value!;
+                    },
+                  ), // Password
+                  const SizedBox(height: 18),
+                  Center(
+                    child: Text(
+                      _mensageError,
+                      style: const TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: OutlinedButton(
+                        style: const ButtonStyle(
+                            padding: MaterialStatePropertyAll(
+                                EdgeInsets.fromLTRB(80, 10, 80, 10))),
+                        onPressed: _formSubmit,
+                        child: const Text(
+                          "Login",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromRGBO(255, 127, 80, 1),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
             ),
-          ), //Form
+          ),
+          TextButton(
+            child: const Text(
+              "Não tem conta? Crie sua conta aqui!",
+              style: TextStyle(
+                color: Color.fromRGBO(255, 127, 80, 1),
+                decoration: TextDecoration.underline,
+                decorationStyle: TextDecorationStyle.solid,
+                fontSize: 16,
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Cadastro()),
+              );
+            },
+          ),
         ],
       ),
     );

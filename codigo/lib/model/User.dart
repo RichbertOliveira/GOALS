@@ -20,6 +20,16 @@ class User {
     };
   }
 
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      id: map['id'],
+      name: map['name'],
+      password: map['password'],
+      email: map['email'],
+    );
+  }
+
+
   @override
   String toString() {
     return 'User{id: $id, name: $name, email: $email, password: $password}';

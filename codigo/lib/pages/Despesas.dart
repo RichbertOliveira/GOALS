@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:goals/components/CardDespesaDetalhes.dart';
 import 'package:goals/pages/DespesasCreate.dart';
 
-import '../database/DbFile.dart';
+import '../database/DatabaseHelper.dart';
 import '../database/ExpensesDb.dart';
 import '../model/Expenses.dart';
 import '../model/User.dart';
@@ -21,7 +21,6 @@ class Despesas extends StatefulWidget {
 }
 
 class _DespesasState extends State<Despesas> {
-  final DbFile dbFile = DbFile();
   final ExpensesDb expensesFile = ExpensesDb();
 
 
@@ -47,7 +46,7 @@ class _DespesasState extends State<Despesas> {
 
   Future<double> findExpensesValue(String type) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Database database = await dbFile.findDatabase();
+    Database database = await DatabaseHelper.createDatabase();
 
     var userId = prefs.getString('userId');
     var totalValue = 0.0;

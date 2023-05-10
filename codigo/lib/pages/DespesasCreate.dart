@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as Path;
 
-import '../database/DbFile.dart';
+import '../database/DatabaseHelper.dart';
 import '../database/ExpensesDb.dart';
 import '../main.dart';
 import 'Despesas.dart';
@@ -22,8 +22,7 @@ class _DespesasCreateState extends State<DespesasCreate> {
   final typeController = TextEditingController();
 
   void saveDespesa(String name, double value, String frequency, String type) async {
-    final DbFile dbFile = DbFile();
-    Database database = await dbFile.findDatabase();
+    Database database = await DatabaseHelper.createDatabase();
     final ExpensesDb expensesFile = ExpensesDb();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 

@@ -6,53 +6,195 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as Path;
 
 
-import 'database/DbFile.dart';
-import 'database/UsersDb.dart';
+import 'database/DatabaseHelper.dart';
+import 'database/UserDAO.dart';
 import 'model/User.dart';
 
 class Cadastro extends StatefulWidget {
+  const Cadastro({super.key});
+
   @override
   _CadastroState createState() => _CadastroState();
 }
 
 class _CadastroState extends State<Cadastro> {
-  final DbFile dbFile = DbFile();
-  final UsersDb usersDb = UsersDb();
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final passwordCheckController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String _name = "";
+  String _email = "";
+  String _password = "";
+  String _conformPassword = "";
+  String _mensageError = "";
 
-  void cadastrar(String? name, String? email, String? password, String? passwordCheck) async {
-    if(name == null || name == '') {
-      return;
+  void _cadastro() async{
+    if(_formKey.currentState!.validate()){
+      User? user = await UserDAO.getUserByEmail(_email);
+      if(user == null && _password == _conformPassword){
+        User newUser = User(id: await UserDAO.getLastId(), name: _name, email: _email, password: _password);
+        UserDAO.insertUser(newUser);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Login()),
+        );
+      }
+      else{
+        setState(() {
+          _mensageError = "Usuário já existente";
+        });
+      }
     }
-    if(email == null || email == '') {
-      return;
-    }
-    if(password == null || password == '') {
-      return;
-    }
-
-    final DbFile dbFile = DbFile();
-    Database database = await dbFile.findDatabase();
-    final UsersDb usersFile = UsersDb();
-
-    var user = User(
-      id: usersFile.findLastId(database),
-      name: name,
-      email: email,
-      password: password,
-    );
-
-    usersDb.insertUser(user, database);
-
-    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Material(
+      child: ListView(
+        children: [
+          const Center(
+            child: Text(
+              "Goals",
+              style: TextStyle(
+                fontSize: 42,
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(48, 18, 48, 18),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Cadastro",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                    ),
+                    keyboardType: TextInputType.text,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _email = value!;
+                    },
+                  ), // name
+                  const SizedBox(height: 18),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'E-mail',
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!EmailValidator.validate(value)) {
+                        return 'Please enter a valid email address';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _email = value!;
+                    },
+                  ), // Email
+                  const SizedBox(height: 18),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Password',
+                    ),
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your password';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _password = value!;
+                    },
+                  ), // Password
+                  const SizedBox(height: 18),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Confirm Password',
+                    ),
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your confirm password';
+                      }
+                      if(_conformPassword != _password) {
+                        return 'The confirm password is not match';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _conformPassword = value!;
+                    },
+                  ), //Confirm Password
+                  Text(
+                    _mensageError,
+                    style: const TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  Center(
+                    child: OutlinedButton(
+                        style: const ButtonStyle(
+                            padding: MaterialStatePropertyAll(
+                                EdgeInsets.fromLTRB(80, 10, 80, 10))),
+                        onPressed: _cadastro,
+                        child: const Text(
+                          "Cadastro",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromRGBO(255, 127, 80, 1),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          TextButton(
+            child: const Text(
+              "Já tem conta? Faça o login aqui!",
+              style: TextStyle(
+                color: Color.fromRGBO(255, 127, 80, 1),
+                decoration: TextDecoration.underline,
+                decorationStyle: TextDecorationStyle.solid,
+                fontSize: 16,
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
+/* return Container(
       color: Colors.white,
       padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
       child: Column(
@@ -210,6 +352,4 @@ class _CadastroState extends State<Cadastro> {
           ), //Form
         ],
       ),
-    );
-  }
-}
+    );*/
