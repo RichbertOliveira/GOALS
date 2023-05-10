@@ -45,16 +45,14 @@ class _InicioState extends State<Inicio> {
       appBar: AppBar(
         backgroundColor: Colors.red[350],
         title: const Center (
-          child: Text("GOALS"),
+          child: Center(child: Text("Goals")),
         ),
       ),
-      backgroundColor: Colors.red[200],
-      body: Container(
-        child: Column(
+      backgroundColor: Colors.white,
+      body: ListView(
           children: [
             _telas[_indiceAtual],
           ],
-        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _indiceAtual,
