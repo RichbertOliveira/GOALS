@@ -8,6 +8,7 @@ import 'package:goals/pages/DespesasCreate.dart';
 
 import '../database/DatabaseHelper.dart';
 import '../database/ExpensesDb.dart';
+import '../main.dart';
 import '../model/Expenses.dart';
 import '../model/User.dart';
 
@@ -35,23 +36,26 @@ class _DespesasState extends State<Despesas> {
     loadExpensesValues();
   }
 
-  Future<List<double>> loadExpensesValues() async {
-    findExpensesValue('').then((value) => setState((){fixedMadatory = value;}));
-    findExpensesValue('').then((value) => setState((){variableMandatory = value;}));
-    findExpensesValue('').then((value) => setState((){fixedNonMandatory = value;}));
-    findExpensesValue('').then((value) => setState((){variableNonMandatory = value;}));
+  void loadExpensesValues() async {
+    findExpensesValue('FM').then((value) => setState((){fixedMadatory = value;}));
+    findExpensesValue('VM').then((value) => setState((){variableMandatory = value;}));
+    findExpensesValue('FNM').then((value) => setState((){fixedNonMandatory = value;}));
+    findExpensesValue('VNM').then((value) => setState((){variableNonMandatory = value;}));
 
-    return [fixedMadatory, variableMandatory, fixedNonMandatory, variableNonMandatory,];
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Inicio())
+    );
   }
 
   Future<double> findExpensesValue(String type) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     Database database = await DatabaseHelper.createDatabase();
 
-    var userId = prefs.getString('userId');
+    var userId = prefs.getInt('userId');
     var totalValue = 0.0;
 
-    var expenses = await expensesFile.findAllExpensesByType(type, int.parse(userId!), database);
+    var expenses = await expensesFile.findAllExpensesByType(type, userId!, database);
 
     for(var i = 0; i < expenses.length; i++) {
       totalValue += expenses[i]['value'];

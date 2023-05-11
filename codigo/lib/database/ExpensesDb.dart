@@ -7,7 +7,6 @@ import '../model/User.dart';
 
 class ExpensesDb {
   insertExpenses(Expenses expense, Database db) async {
-
     int returnInsert = await db.insert(
         "expenses",
         expense.toMap()
@@ -42,14 +41,22 @@ class ExpensesDb {
   findAllExpensesByType(String type, int userId, Database database) async {
     final List<Map<String, dynamic>> expenses = await database.query(
       'expenses',
+      where: "type = ?",
+      whereArgs: [type],
     );
 
     return expenses;
   }
 
   findLastId(Database database) async {
-    var idList = await database.rawQuery("SELECT MAX(id) FROM expenses");
+    var result = await database.rawQuery("SELECT id FROM expenses ORDER BY id DESC LIMIT 1");
+    print(result.first['id']);
+    if (result.isNotEmpty) {
+      var lastId = result.isNotEmpty ? result.first['id'] as int : 0;
 
-    return idList.elementAt(0);
+      return lastId + 1;
+    }
+
+    return 1;
   }
 }

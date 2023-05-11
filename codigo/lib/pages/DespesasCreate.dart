@@ -20,26 +20,24 @@ class _DespesasCreateState extends State<DespesasCreate> {
   final valueController = TextEditingController();
   final frequencyController = TextEditingController();
   final typeController = TextEditingController();
+  var _frequency = null;
+  var _type = null;
 
   void saveDespesa(String name, double value, String frequency, String type) async {
     Database database = await DatabaseHelper.createDatabase();
     final ExpensesDb expensesFile = ExpensesDb();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var prevExpenses = expensesFile.findAllExpensesByType('', int.parse(prefs.getString('userId')!), database);
-
-
-
     var expense = Expenses(
-      id: expensesFile.findLastId(database),
+      id: await expensesFile.findLastId(database),
       name: name,
       value: value,
       frequency: frequency,
       type: type,
-      userId: int.parse(prefs.getString('userId')!),
+      userId: prefs.getInt('userId')!,
     );
 
-    expensesFile.insertExpenses(expense, database);
+    await expensesFile.insertExpenses(expense, database);
 
     Navigator.push(
         context,
@@ -104,38 +102,60 @@ class _DespesasCreateState extends State<DespesasCreate> {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
+              decoration: BoxDecoration(
+                color: Colors.indigo[300],
+              ),
               padding: const EdgeInsets.all(10.0),
               child: DropdownButtonFormField<String>(
-                items: [
-                  DropdownMenuItem<String>(child:Text("Selecionar Frequência")),
-                  DropdownMenuItem<String>(child:Text("Diário"), value: 'DIARIO',),
-                  DropdownMenuItem<String>(child:Text("Semanal"), value: 'SEMANAL',),
-                  DropdownMenuItem<String>(child:Text("Mensal"), value: 'MENSAL',),
-                  DropdownMenuItem<String>(child:Text("Anual"), value: 'ANUAL',),
-                ],
-                onChanged: (Object? value) {  },
+                hint: const Text("Selecionar Frequência",
                 style: const TextStyle(
                   color: Colors.white,
+                )),
+                items: const [
+                  DropdownMenuItem<String>(value: 'DIARIO',child:Text("Diário"),),
+                  DropdownMenuItem<String>(value: 'SEMANAL',child:Text("Semanal"),),
+                  DropdownMenuItem<String>(value: 'MENSAL',child:Text("Mensal"),),
+                  DropdownMenuItem<String>(value: 'ANUAL',child:Text("Anual"),),
+                ],
+                onChanged: (Object? value) {
+                  setState(() {
+                    _frequency = value;
+                  });
+                },
+                dropdownColor: Colors.indigo[300],
+                style: TextStyle(
+                  color: Colors.white,
+                  backgroundColor: Colors.indigo[300],
                 ),
               ),
             ),
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
+              decoration: BoxDecoration(
+                color: Colors.indigo[300],
+              ),
               padding: const EdgeInsets.all(10.0),
               child: DropdownButtonFormField<String>(
+                hint: const Text("Selecionar Tipo de Despesa",
+                style: const TextStyle(
+                  color: Colors.white,
+                )),
                 items: [
-                  DropdownMenuItem<String>(child:Text("Selecionar Tipo de Despesa")),
                   DropdownMenuItem<String>(child:Text("Obrigatória Fixa"), value: 'FM',),
                   DropdownMenuItem<String>(child:Text("Obrigatória Variável"), value: 'VM',),
                   DropdownMenuItem<String>(child:Text("Não-Obrigatória Fixa"), value: 'FNM',),
                   DropdownMenuItem<String>(child:Text("Não-Obrigatória Variável"), value: 'VNM',),
                 ],
-                onChanged: (Object? value) {  },
-                style: const TextStyle(
+                onChanged: (Object? value) {
+                  setState(() {
+                    _type = value;
+                  });
+                },
+                dropdownColor: Colors.indigo[300],
+                style: TextStyle(
                   color: Colors.white,
+                  backgroundColor: Colors.indigo[300],
                 ),
               ),
             ),
@@ -151,7 +171,7 @@ class _DespesasCreateState extends State<DespesasCreate> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    saveDespesa(nameController.text, double.parse(valueController.text), frequencyController.text, typeController.text);
+                    saveDespesa(nameController.text, double.parse(valueController.text), _frequency, _type);
                   },
                   child: const Text('Salvar'),
                 ),

@@ -24,12 +24,15 @@ class DatabaseHelper {
               email VARCHAR, 
               password VARCHAR
               );
+    ''');
+    await db.execute('''
       CREATE TABLE expenses (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               name VARCHAR, 
               value DOUBLE, 
               type VARCHAR, 
-              userId INTEGER)
+              frequency VARCHAR,
+              userId INTEGER);
     ''');
   }
   static Future<void> deleteDatabase() async {
