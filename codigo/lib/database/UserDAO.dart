@@ -43,9 +43,10 @@ class UserDAO extends DatabaseHelper {
   static Future<User?> getUserByEmail(String email) async {
     final Database db = await DatabaseHelper.createDatabase();
 
-    final List<Map<String, dynamic>> result = await db.rawQuery(
-      'SELECT * FROM users WHERE email = ?',
-      [email],
+    final List<Map<String, dynamic>> result = await db.query(
+      'users',
+      where: 'email = ?',
+      whereArgs: [email],
     );
 
     if (result.isNotEmpty) {

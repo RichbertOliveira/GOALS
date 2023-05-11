@@ -41,11 +41,6 @@ class _DespesasState extends State<Despesas> {
     findExpensesValue('VM').then((value) => setState((){variableMandatory = value;}));
     findExpensesValue('FNM').then((value) => setState((){fixedNonMandatory = value;}));
     findExpensesValue('VNM').then((value) => setState((){variableNonMandatory = value;}));
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Inicio())
-    );
   }
 
   Future<double> findExpensesValue(String type) async {
