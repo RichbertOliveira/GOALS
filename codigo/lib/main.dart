@@ -11,7 +11,7 @@ void main() {
     theme: ThemeData(
       primarySwatch: Colors.red,
     ),
-    home: const Inicio(),
+    home: const Login(),
   ));
 
 }
