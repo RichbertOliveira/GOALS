@@ -23,68 +23,9 @@ class Goals extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => _EditGoalsState())
-              );
-            },
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
-              height: 100,
-              width: 600,
-              child: const Text(
-                "Viagem para Paris"
-                "\nR\$2500.00 / R\$5000.40",
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => _EditGoalsState())
-              );
-            },
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
-              padding: const EdgeInsets.all(10.0),
-              height: 100,
-              width: 600,
-              child: const Text(
-                "Viagem para Disney"
-                "\nR\$1500.00 / R\$2500.89",
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => _EditGoalsState())
-              );
-            },
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
-              height: 100,
-              width: 600,
-              child: const Text(
-                "Comprar geladeira nova"
-                "\nR\$200.00 / R\$2000.00",
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
+          const GoalCard(id: 0, title: 'Viagem para Paris', savedAmount: 2500, desiredAmount: 5000.40),
+          const GoalCard(id: 1, title: 'Viagem para Disney', savedAmount: 1500, desiredAmount: 2500.89),
+          const GoalCard(id: 2, title: 'Comprar geladiera Nova', savedAmount: 200, desiredAmount: 2000.00),
           ElevatedButton(
             style: raisedButtonStyle,
             onPressed: () {
@@ -108,7 +49,7 @@ class _CadGoalsState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red[200],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Cadastro de GOAL'),
       ),
@@ -118,7 +59,7 @@ class _CadGoalsState extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
+              color: Colors.white,
               child: TextFormField(
                 style: const TextStyle(fontSize: 15, color: Colors.white),
                 keyboardType: TextInputType.text,
@@ -139,7 +80,7 @@ class _CadGoalsState extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
+              color: Colors.white,
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 style: const TextStyle(fontSize: 15, color: Colors.white),
@@ -190,7 +131,7 @@ class _EditGoalsState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red[200],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Cadastro de GOAL'),
       ),
@@ -200,14 +141,14 @@ class _EditGoalsState extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
+              color: Colors.white,
               child: TextFormField(
                 initialValue: "Viagem para Disney",
-                style: const TextStyle(fontSize: 15, color: Colors.white),
+                style: const TextStyle(fontSize: 15, color: Colors.black),
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   labelText: "Nome do GOAL: ",
-                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  labelStyle: TextStyle(fontSize: 15, color: Colors.black),
                   border: OutlineInputBorder(),
                 ),
                 validator: (String? nomeGoal) {
@@ -222,14 +163,14 @@ class _EditGoalsState extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
+              color: Colors.white,
               child: TextFormField(
                 initialValue: "2500.89",
                 keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 15, color: Colors.white),
+                style: const TextStyle(fontSize: 15, color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: "Valor do GOAL: ",
-                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  labelStyle: TextStyle(fontSize: 15, color: Colors.black),
                   border: OutlineInputBorder(),
                 ),
                 validator: (String? nomeGoal) {
@@ -244,15 +185,15 @@ class _EditGoalsState extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
+              color: Colors.white,
               child: TextFormField(
                 initialValue: "1500.00",
                 keyboardType: TextInputType.number,
                 readOnly: true,
-                style: const TextStyle(fontSize: 15, color: Colors.white),
+                style: const TextStyle(fontSize: 15, color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: "Guardado: ",
-                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  labelStyle: TextStyle(fontSize: 15, color: Colors.black),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -260,16 +201,16 @@ class _EditGoalsState extends StatelessWidget {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(10.0),
-              color: Colors.indigo[300],
+              color: Colors.white,
               child: TextFormField(
                 keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 15, color: Colors.white),
+                style: const TextStyle(fontSize: 15, color: Colors.black),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 decoration: const InputDecoration(
                   labelText: "Valor a retirar ou guardar: ",
-                  labelStyle: TextStyle(fontSize: 15, color: Colors.white),
+                  labelStyle: TextStyle(fontSize: 15, color: Colors.black),
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -311,6 +252,97 @@ class _EditGoalsState extends StatelessWidget {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class GoalCard extends StatelessWidget {
+  final int id;
+  final String title;
+  final double savedAmount;
+  final double desiredAmount;
+
+  const GoalCard(
+      {super.key, required this.id,
+        required this.title,
+        required this.savedAmount,
+        required this.desiredAmount});
+
+  @override
+  Widget build(BuildContext context) {
+    double progressPercentage = (savedAmount / desiredAmount).clamp(0.0, 1.0);
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => _EditGoalsState())
+        );
+      },
+      child: Card(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style:
+                const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[400],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: progressPercentage,
+                        child: Container(
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        bottom: 0,
+                        left: 8,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            savedAmount.toStringAsFixed(2),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Total: ${desiredAmount.toStringAsFixed(2)}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.right,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

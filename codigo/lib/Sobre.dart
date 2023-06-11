@@ -13,7 +13,6 @@ class Sobre extends StatelessWidget {
           Container(
             margin: const EdgeInsets.all(10.0),
             padding: const EdgeInsets.all(5.0),
-            color: Colors.indigo[200],
             child: const Text(
                 "GOALS é o aplicativo criado com a intenção de ajudar seus usuários a controlar suas finanças de forma fácil, "
                 "gamificada e rápida. Possibilitando o gerenciamento de despesas e estabelecendo limites para cada uma delas"
