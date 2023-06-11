@@ -21,9 +21,20 @@ class Expenses {
       'name': name,
       'value': value,
       'type': type,
-      'userId': userId,
       'frequency': frequency,
+      'userId': userId,
     };
+  }
+
+  factory Expenses.fromMap(Map<String, dynamic> map) {
+    return Expenses(
+      id: map['id'],
+      name: map['name'],
+      value: map['value'],
+      type: map['type'],
+      frequency: map['frequency'],
+      userId: map['userId'],
+    );
   }
 
   @override

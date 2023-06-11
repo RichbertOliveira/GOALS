@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:goals/database/DatabaseHelper.dart';
 
 import 'package:goals/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Cadastro.dart';
 import 'database/UserDAO.dart';
 import 'model/User.dart';
@@ -21,6 +22,8 @@ class _LoginState extends State<Login> {
   String _mensageError = "";
 
   void _formSubmit() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (_formKey.currentState!.validate()) {
       User? user = await UserDAO.getUserByEmail(_email);
       if (user == null) {
@@ -28,6 +31,8 @@ class _LoginState extends State<Login> {
           _mensageError = "Verifique seu e-mail e senha";
         });
       } else if (user.email == _email && user.password == _password) {
+        var loggedUser = prefs.setInt('userId', user.id);
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => Inicio()),
