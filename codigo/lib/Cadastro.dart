@@ -5,6 +5,7 @@ import 'main.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as Path;
 
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'database/DatabaseHelper.dart';
 import 'database/UserDAO.dart';
@@ -27,6 +28,33 @@ class _CadastroState extends State<Cadastro> {
 
   void _cadastro() async{
     if(_formKey.currentState!.validate()){
+      try {
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Login()),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          setState(() {
+            _mensageError = "A senha é muito fraca";
+          });
+        } else if (e.code == 'email-already-in-use') {
+          setState(() {
+            _mensageError = "Usuário já existente";
+          });
+        }
+      } catch (e) {
+        setState(() {
+          _mensageError = "Ocorreu um erro inesperado";
+        });
+      }
+
+
       User? user = await UserDAO.getUserByEmail(_email);
       if(user == null && _password == _conformPassword){
         User newUser = User(id: await UserDAO.getLastId(), name: _name, email: _email, password: _password);
