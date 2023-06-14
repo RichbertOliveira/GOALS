@@ -12,6 +12,9 @@ import '../database/GoalsDb.dart';
 class GoalsCreate extends StatelessWidget {
   GoalsCreate({super.key});
 
+  final nameController = TextEditingController();
+  final valueController = TextEditingController();
+
   void saveGoal(String name, double value) async {
     print('caiu 1');
     // Database database = await DatabaseHelper.createDatabase();
@@ -26,11 +29,6 @@ class GoalsCreate extends StatelessWidget {
     );
 
     await goalsFile.insertGoals(goal);
-
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(builder: (context) => Inicio())
-    // );
   }
 
   @override
@@ -49,6 +47,7 @@ class GoalsCreate extends StatelessWidget {
               color: Colors.white,
               child: TextFormField(
                 style: const TextStyle(fontSize: 15, color: Colors.black),
+                controller: nameController,
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   labelText: "Nome do GOAL",
@@ -70,6 +69,7 @@ class GoalsCreate extends StatelessWidget {
               color: Colors.white,
               child: TextFormField(
                 keyboardType: TextInputType.number,
+                controller: valueController,
                 style: const TextStyle(fontSize: 15, color: Colors.black),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -99,8 +99,8 @@ class GoalsCreate extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    saveGoal('Nome', 1400);
-                    // saveDespesa(nameController.text, double.parse(valueController.text), _frequency, _type);
+                    saveGoal(nameController.text, double.parse(valueController.text));
+                    Navigator.pop(context);
                   },
                   child: const Text('Salvar'),
                 ),
