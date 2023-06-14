@@ -10,10 +10,6 @@ import 'Sobre.dart';
 import 'pages/Despesas.dart';
 
 void main() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
@@ -22,6 +18,9 @@ void main() async {
     home: const Login(),
   ));
 
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class Inicio extends StatefulWidget {

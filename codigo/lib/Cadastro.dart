@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'database/DatabaseHelper.dart';
 import 'database/UserDAO.dart';
-import 'model/User.dart';
+// import 'model/User.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
@@ -47,6 +47,10 @@ class _CadastroState extends State<Cadastro> {
           setState(() {
             _mensageError = "Usuário já existente";
           });
+        } else {
+          setState(() {
+            _mensageError = "Ocorreu um erro inesperado";
+          });
         }
       } catch (e) {
         setState(() {
@@ -55,20 +59,20 @@ class _CadastroState extends State<Cadastro> {
       }
 
 
-      User? user = await UserDAO.getUserByEmail(_email);
-      if(user == null && _password == _conformPassword){
-        User newUser = User(id: await UserDAO.getLastId(), name: _name, email: _email, password: _password);
-        UserDAO.insertUser(newUser);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Login()),
-        );
-      }
-      else{
-        setState(() {
-          _mensageError = "Usuário já existente";
-        });
-      }
+      // User? user = await UserDAO.getUserByEmail(_email);
+      // if(user == null && _password == _conformPassword){
+      //   User newUser = User(id: await UserDAO.getLastId(), name: _name, email: _email, password: _password);
+      //   UserDAO.insertUser(newUser);
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => Login()),
+      //   );
+      // }
+      // else{
+      //   setState(() {
+      //     _mensageError = "Usuário já existente";
+      //   });
+      // }
     }
   }
 
@@ -112,7 +116,7 @@ class _CadastroState extends State<Cadastro> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
+                    onChanged: (value) {
                       _email = value!;
                     },
                   ), // name
@@ -131,7 +135,7 @@ class _CadastroState extends State<Cadastro> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
+                    onChanged: (value) {
                       _email = value!;
                     },
                   ), // Email
@@ -148,7 +152,7 @@ class _CadastroState extends State<Cadastro> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
+                    onChanged: (value) {
                       _password = value!;
                     },
                   ), // Password
@@ -161,14 +165,14 @@ class _CadastroState extends State<Cadastro> {
                     obscureText: true,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter your confirm password';
+                        return 'Por favor, confirme sua senha';
                       }
                       if(_conformPassword != _password) {
-                        return 'The confirm password is not match';
+                        return 'As senhas são diferentes';
                       }
                       return null;
                     },
-                    onSaved: (value) {
+                    onChanged: (value) {
                       _conformPassword = value!;
                     },
                   ), //Confirm Password
