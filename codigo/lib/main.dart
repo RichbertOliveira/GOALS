@@ -35,7 +35,7 @@ class _InicioState extends State<Inicio> {
 
   final List<Widget> _telas = [
     Despesas(despesas: "Despesas"),
-    Goals("Goals"),
+    Goals(goals: "Goals"),
     Sobre("Sobre"),
   ];
 
