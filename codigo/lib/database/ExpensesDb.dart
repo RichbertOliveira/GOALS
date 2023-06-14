@@ -64,14 +64,6 @@ class ExpensesDb {
       }
     });
 
-
-    // final List<Map<String, dynamic>> expenses = await database.query(
-    //   'expenses',
-    //   where: "type = ?",
-    //   whereArgs: [type],
-    // );
-
-    print(expenses);
     return expenses;
   }
 

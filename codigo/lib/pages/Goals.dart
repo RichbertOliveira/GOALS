@@ -32,11 +32,10 @@ class _GoalsState extends State<Goals> {
 
   Future<void> loadGoals() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Database database = await DatabaseHelper.createDatabase();
+    // Database database = await DatabaseHelper.createDatabase();
 
-    var userId = prefs.getInt('userId');
-
-    final List<Map<String, dynamic>> fetchedGoals = await goalsFile.searchGoalsByUser(userId!, database);
+    var userId = prefs.getString('userId');
+    final List<Map<String, dynamic>> fetchedGoals = await goalsFile.searchGoalsByUser(userId!);
 
     setState(() {
       goals = fetchedGoals;
@@ -59,6 +58,7 @@ class _GoalsState extends State<Goals> {
     return Scrollable(
       viewportBuilder: (BuildContext context, ViewportOffset offset) {
         return ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
           itemCount: goals.length+1,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
@@ -68,7 +68,7 @@ class _GoalsState extends State<Goals> {
                   id: index,
                   title: goal['name'],
                   savedAmount: goal['stored'],
-                  desiredAmount: goal['value']
+                  desiredAmount: goal['value'],
               );
             } else {
               return Column(
@@ -80,7 +80,7 @@ class _GoalsState extends State<Goals> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => GoalsCreate())
-                      );
+                      ).then((value) => loadGoals());
                     },
                     child: const Icon(Icons.add),
                   )

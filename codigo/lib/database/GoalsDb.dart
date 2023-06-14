@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:sqflite/sqflite.dart';
@@ -11,6 +13,7 @@ class GoalsDb {
     final expenseObject = <String, dynamic>{
       "name": goal.name,
       "value": goal.value,
+      "stored": 0.0,
     };
 
     db.collection("users/${goal.userId}/goals")
@@ -41,13 +44,23 @@ class GoalsDb {
     return returnDelete;
   }
 
-  searchGoalsByUser(int userId, Database db) async {
-    final List<Map<String, dynamic>> expenses = await db.query(
-      'goals',
-      where: "userId = ?",
-      whereArgs: [userId],
-    );
+  searchGoalsByUser(String userId) async {
+    final db = FirebaseFirestore.instance;
+    final List<Map<String, dynamic>> goals = [];
 
-    return expenses;
+    await db.collection("users/${userId}/goals")
+        .get().then((event) {
+      for (var doc in event.docs) {
+        final data = doc.data() as Map<String, dynamic>;
+        goals.add({
+          "id": doc.id,
+          "name": data['name'],
+          "value": double.parse(data['value'].toString()),
+          "stored": double.parse(data['stored'].toString()),
+        });
+      }
+    });
+
+    return goals;
   }
 }
