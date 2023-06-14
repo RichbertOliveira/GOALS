@@ -10,10 +10,34 @@ import '../database/DatabaseHelper.dart';
 import '../database/GoalsDb.dart';
 
 class GoalsEdit extends StatelessWidget {
-  GoalsEdit({super.key});
+  final int id;
+  final String title;
+  final double savedAmount;
+  final double desiredAmount;
+
+  final titleController = TextEditingController();
+  final savedAmountController = TextEditingController();
+  final desiredController = TextEditingController();
+  final insertController = TextEditingController();
+
+  GoalsEdit({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.desiredAmount,
+    required this.savedAmount,
+  });
+
+  @override
+  void initState() {
+    titleController.text = title;
+    savedAmountController.text = savedAmount.toString();
+    desiredController.text = desiredAmount.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
+    initState();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -27,7 +51,8 @@ class GoalsEdit extends StatelessWidget {
               margin: const EdgeInsets.all(10.0),
               color: Colors.white,
               child: TextFormField(
-                initialValue: "Viagem para Disney",
+                // initialValue: title,
+                controller: titleController,
                 style: const TextStyle(fontSize: 15, color: Colors.black),
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
@@ -49,8 +74,9 @@ class GoalsEdit extends StatelessWidget {
               margin: const EdgeInsets.all(10.0),
               color: Colors.white,
               child: TextFormField(
-                initialValue: "2500.89",
+                // initialValue: desiredAmount.toString(),
                 keyboardType: TextInputType.number,
+                controller: desiredController,
                 style: const TextStyle(fontSize: 15, color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: "Valor do GOAL: ",
@@ -71,8 +97,9 @@ class GoalsEdit extends StatelessWidget {
               margin: const EdgeInsets.all(10.0),
               color: Colors.white,
               child: TextFormField(
-                initialValue: "1500.00",
+                initialValue: savedAmount.toString(),
                 keyboardType: TextInputType.number,
+                // controller: savedAmountController,
                 readOnly: true,
                 style: const TextStyle(fontSize: 15, color: Colors.black),
                 decoration: const InputDecoration(
@@ -88,6 +115,7 @@ class GoalsEdit extends StatelessWidget {
               color: Colors.white,
               child: TextFormField(
                 keyboardType: TextInputType.number,
+                controller: insertController,
                 style: const TextStyle(fontSize: 15, color: Colors.black),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,

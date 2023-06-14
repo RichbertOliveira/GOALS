@@ -105,11 +105,13 @@ class GoalCard extends StatelessWidget {
   final double savedAmount;
   final double desiredAmount;
 
-  const GoalCard(
-      {super.key, required this.id,
-        required this.title,
-        required this.savedAmount,
-        required this.desiredAmount});
+  const GoalCard({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.savedAmount,
+    required this.desiredAmount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +120,12 @@ class GoalCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => GoalsEdit())
+            MaterialPageRoute(builder: (context) => GoalsEdit(
+                id: id,
+                title: title,
+                desiredAmount: desiredAmount,
+                savedAmount: savedAmount,
+            ))
         );
       },
       child: Card(
