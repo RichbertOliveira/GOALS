@@ -58,6 +58,7 @@ class _GoalsState extends State<Goals> {
       viewportBuilder: (BuildContext context, ViewportOffset offset) {
         return ListView.builder(
           itemCount: goals.length+1,
+          shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             if(index < goals.length) {
               final goal = goals[index];
