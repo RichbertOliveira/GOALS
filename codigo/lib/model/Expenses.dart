@@ -1,13 +1,13 @@
 class Expenses {
-  final int id;
+  final int? id;
   final String name;
   final double value;
   final String type;
-  final int userId;
+  final String userId;
   final String frequency;
 
   const Expenses({
-    required this.id,
+    this.id,
     required this.name,
     required this.value,
     required this.type,

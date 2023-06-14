@@ -24,20 +24,20 @@ class _DespesasCreateState extends State<DespesasCreate> {
   var _type = null;
 
   void saveDespesa(String name, double value, String frequency, String type) async {
-    Database database = await DatabaseHelper.createDatabase();
+    // Database database = await DatabaseHelper.createDatabase();
     final ExpensesDb expensesFile = ExpensesDb();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     var expense = Expenses(
-      id: await expensesFile.findLastId(database),
+      // id: await expensesFile.findLastId(database),
       name: name,
       value: value,
       frequency: frequency,
       type: type,
-      userId: prefs.getInt('userId')!,
+      userId: prefs.getString('userId')!,
     );
 
-    await expensesFile.insertExpenses(expense, database);
+    await expensesFile.insertExpenses(expense);
 
     Navigator.push(
         context,

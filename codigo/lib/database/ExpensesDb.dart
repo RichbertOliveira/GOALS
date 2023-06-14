@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -6,13 +7,26 @@ import '../model/Expenses.dart';
 import '../model/User.dart';
 
 class ExpensesDb {
-  insertExpenses(Expenses expense, Database db) async {
-    int returnInsert = await db.insert(
-        "expenses",
-        expense.toMap()
-    );
+  insertExpenses(Expenses expense) async {
+    final db = FirebaseFirestore.instance;
+    final expenseObject = <String, dynamic>{
+      "name": expense.name,
+      "value": expense.value,
+      "type": expense.type,
+      "frequency": expense.frequency,
+    };
 
-    return returnInsert;
+    db.collection("users/${expense.userId}/expenses")
+        .add(expenseObject)
+        .then((DocumentReference doc) => print('DocumentSnapshot added with ID: ${doc.id}'));
+
+
+    // int returnInsert = await db.insert(
+    //     "expenses",
+    //     expense.toMap()
+    // );
+
+    // return returnInsert;
   }
 
   updateExpenses(int id, Map<String, dynamic> expenses, Database db) async {
