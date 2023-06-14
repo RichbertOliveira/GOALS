@@ -69,6 +69,7 @@ class _GoalsState extends State<Goals> {
                   title: goal['name'],
                   savedAmount: goal['stored'],
                   desiredAmount: goal['value'],
+                  reload: loadGoals,
               );
             } else {
               return Column(
@@ -104,6 +105,7 @@ class GoalCard extends StatelessWidget {
   final String title;
   final double savedAmount;
   final double desiredAmount;
+  final Function? reload;
 
   const GoalCard({
     super.key,
@@ -111,6 +113,7 @@ class GoalCard extends StatelessWidget {
     required this.title,
     required this.savedAmount,
     required this.desiredAmount,
+    this.reload,
   });
 
   @override
@@ -126,7 +129,7 @@ class GoalCard extends StatelessWidget {
                 desiredAmount: desiredAmount,
                 savedAmount: savedAmount,
             ))
-        );
+        ).then((value) => reload!() );
       },
       child: Card(
         color: Colors.white,
