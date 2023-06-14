@@ -10,7 +10,7 @@ import '../database/DatabaseHelper.dart';
 import '../database/GoalsDb.dart';
 
 class GoalsEdit extends StatelessWidget {
-  final int id;
+  final String id;
   final String title;
   final double savedAmount;
   final double desiredAmount;
@@ -28,11 +28,18 @@ class GoalsEdit extends StatelessWidget {
     required this.savedAmount,
   });
 
-  @override
   void initState() {
     titleController.text = title;
     savedAmountController.text = savedAmount.toString();
     desiredController.text = desiredAmount.toString();
+  }
+
+  Future<void> apagarGoal() async {
+    final GoalsDb goalsFile = GoalsDb();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final userId = prefs.getString('userId') ?? "";
+    await goalsFile.deleteGoals(id, userId);
   }
 
   @override
@@ -156,7 +163,8 @@ class GoalsEdit extends StatelessWidget {
                   child: const Text('Cancelar'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await apagarGoal();
                     Navigator.pop(context);
                   },
                   child: const Text('Deletar Goal'),

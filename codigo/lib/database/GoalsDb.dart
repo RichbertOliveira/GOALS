@@ -33,15 +33,11 @@ class GoalsDb {
     return returnSave;
   }
 
-  deleteGoals(int id, Database db) async {
-
-    int returnDelete = await db.delete(
-      "goals",
-      where: "id = ?",
-      whereArgs: [id],
-    );
-
-    return returnDelete;
+  deleteGoals(String id, String userId) async {
+    final db = FirebaseFirestore.instance;
+    await db.collection("users/$userId/goals")
+      .doc(id)
+      .delete();
   }
 
   searchGoalsByUser(String userId) async {

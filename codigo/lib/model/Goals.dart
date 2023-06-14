@@ -1,5 +1,5 @@
 class Goals {
-  final int? id;
+  final String? id;
   final String name;
   final double value;
   final String userId;

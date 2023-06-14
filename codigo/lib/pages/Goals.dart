@@ -65,7 +65,7 @@ class _GoalsState extends State<Goals> {
             if(index < goals.length) {
               final goal = goals[index];
               return GoalCard(
-                  id: index,
+                  id: goal['id'],
                   title: goal['name'],
                   savedAmount: goal['stored'],
                   desiredAmount: goal['value'],
@@ -100,7 +100,7 @@ class _GoalsState extends State<Goals> {
 
 
 class GoalCard extends StatelessWidget {
-  final int id;
+  final String id;
   final String title;
   final double savedAmount;
   final double desiredAmount;
