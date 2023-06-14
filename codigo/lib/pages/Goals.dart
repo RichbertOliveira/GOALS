@@ -55,41 +55,37 @@ class _GoalsState extends State<Goals> {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollable(
-      viewportBuilder: (BuildContext context, ViewportOffset offset) {
-        return ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: goals.length+1,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            if(index < goals.length) {
-              final goal = goals[index];
-              return GoalCard(
-                  id: index,
-                  title: goal['name'],
-                  savedAmount: goal['stored'],
-                  desiredAmount: goal['value'],
-              );
-            } else {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ElevatedButton(
-                    style: raisedButtonStyle,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GoalsCreate())
-                      ).then((value) => loadGoals());
-                    },
-                    child: const Icon(Icons.add),
-                  )
-                ],
-              );
-            }
-          },
-        );
-      }
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: goals.length+1,
+      shrinkWrap: true,
+      itemBuilder: (BuildContext context, int index) {
+        if(index < goals.length) {
+          final goal = goals[index];
+          return GoalCard(
+              id: index,
+              title: goal['name'],
+              savedAmount: goal['stored'],
+              desiredAmount: goal['value'],
+          );
+        } else {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                style: raisedButtonStyle,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => GoalsCreate())
+                  ).then((value) => loadGoals());
+                },
+                child: const Icon(Icons.add),
+              )
+            ],
+          );
+        }
+      },
     );
   }
 }

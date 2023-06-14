@@ -55,9 +55,9 @@ class _InicioState extends State<Inicio> {
       ),
       backgroundColor: Colors.white,
       body: ListView(
-          children: [
-            _telas[_indiceAtual],
-          ],
+        children: [
+          _telas[_indiceAtual],
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
