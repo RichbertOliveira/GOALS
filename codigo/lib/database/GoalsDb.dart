@@ -35,4 +35,14 @@ class GoalsDb {
 
     return returnDelete;
   }
+
+  searchGoalsByUser(int userId, Database db) async {
+    final List<Map<String, dynamic>> expenses = await db.query(
+      'goals',
+      where: "userId = ?",
+      whereArgs: [userId],
+    );
+
+    return expenses;
+  }
 }

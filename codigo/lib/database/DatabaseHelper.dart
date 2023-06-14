@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 
 class DatabaseHelper {
   static const String _databaseName = 'my_database.db';
-  static const int _databaseVersion = 1;
+  static const int _databaseVersion = 15;
 
   static Future<Database> createDatabase() async {
     final String databasePath = await getDatabasesPath();
@@ -32,6 +32,14 @@ class DatabaseHelper {
               value DOUBLE, 
               type VARCHAR, 
               frequency VARCHAR,
+              userId INTEGER);
+    ''');
+    await db.execute('''
+      CREATE TABLE goals (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name VARCHAR, 
+              value DOUBLE, 
+              stored DOUBLE,
               userId INTEGER);
     ''');
   }

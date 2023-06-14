@@ -50,7 +50,7 @@ class ExpensesDb {
 
   findLastId(Database database) async {
     var result = await database.rawQuery("SELECT id FROM expenses ORDER BY id DESC LIMIT 1");
-    print(result.first['id']);
+
     if (result.isNotEmpty) {
       var lastId = result.isNotEmpty ? result.first['id'] as int : 0;
 

@@ -1,10 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as Path;
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Goals extends StatelessWidget {
-  final String texto;
+import 'database/DatabaseHelper.dart';
+import 'database/GoalsDb.dart';
 
-  Goals(this.texto, {super.key});
+
+class Goals extends StatefulWidget {
+  String goals = 'goals';
+
+  Goals({Key? key, required this.goals}): super(key: key);
+
+  @override
+  State<Goals> createState() => _GoalsState();
+}
+
+class _GoalsState extends State<Goals> {
+  final GoalsDb goalsFile = GoalsDb();
+  List<Map<String, dynamic>> goals = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadGoals();
+  }
+
+  Future<void> loadGoals() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    Database database = await DatabaseHelper.createDatabase();
+
+    var userId = prefs.getInt('userId');
+
+    final List<Map<String, dynamic>> fetchedGoals = await goalsFile.searchGoalsByUser(userId!, database);
+
+    setState(() {
+      goals = fetchedGoals;
+    });
+  }
 
   final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
     foregroundColor: Colors.black87,
@@ -19,25 +54,39 @@ class Goals extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const GoalCard(id: 0, title: 'Viagem para Paris', savedAmount: 2500, desiredAmount: 5000.40),
-          const GoalCard(id: 1, title: 'Viagem para Disney', savedAmount: 1500, desiredAmount: 2500.89),
-          const GoalCard(id: 2, title: 'Comprar geladiera Nova', savedAmount: 200, desiredAmount: 2000.00),
-          ElevatedButton(
-            style: raisedButtonStyle,
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => _CadGoalsState())
+    return Scrollable(
+      viewportBuilder: (BuildContext context, ViewportOffset offset) {
+        return ListView.builder(
+          itemCount: goals.length+1,
+          itemBuilder: (BuildContext context, int index) {
+            if(index < goals.length) {
+              final goal = goals[index];
+              return GoalCard(
+                  id: index,
+                  title: goal['name'],
+                  savedAmount: goal['stored'],
+                  desiredAmount: goal['value']
               );
-            },
-            child: const Icon(Icons.add),
-          )
-        ]
-      ),
+            } else {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ElevatedButton(
+                    style: raisedButtonStyle,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => _CadGoalsState())
+                      );
+                    },
+                    child: const Icon(Icons.add),
+                  )
+                ],
+              );
+            }
+          },
+        );
+      }
     );
   }
 }
