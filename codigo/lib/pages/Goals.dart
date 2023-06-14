@@ -58,7 +58,7 @@ class _GoalsState extends State<Goals> {
     return Scrollable(
       viewportBuilder: (BuildContext context, ViewportOffset offset) {
         return ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: goals.length+1,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
