@@ -1,16 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import '../model/Goals.dart';
+
 class GoalsDb {
-  insertGoals(Map<String, dynamic> goals, Database db) async {
+  insertGoals(Goals goal) async {
+    final db = FirebaseFirestore.instance;
+    final expenseObject = <String, dynamic>{
+      "name": goal.name,
+      "value": goal.value,
+    };
 
-    int returnInsert = await db.insert(
-        "goals",
-        goals
-    );
-
-    return returnInsert;
+    db.collection("users/${goal.userId}/goals")
+        .add(expenseObject)
+        .then((DocumentReference doc) => print('DocumentSnapshot added with ID: ${doc.id}'));
   }
 
   updateGoals(int id, Map<String, dynamic> goals, Database db) async {

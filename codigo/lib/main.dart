@@ -4,7 +4,7 @@ import "firebase_options.dart";
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'Goals.dart';
+import 'pages/Goals.dart';
 import 'Login.dart';
 import 'Sobre.dart';
 import 'pages/Despesas.dart';

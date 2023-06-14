@@ -1,15 +1,13 @@
 class Goals {
-  final int id;
+  final int? id;
   final String name;
   final double value;
-  final String type;
-  final int userId;
+  final String userId;
 
   const Goals({
-    required this.id,
+    this.id,
     required this.name,
     required this.value,
-    required this.type,
     required this.userId,
   });
 
@@ -17,8 +15,6 @@ class Goals {
     return {
       'id': id,
       'name': name,
-      'value': value,
-      'type': type,
       'userId': userId,
     };
   }
@@ -28,13 +24,12 @@ class Goals {
       id: map['id'],
       name: map['name'],
       value: map['value'],
-      type: map['type'],
       userId: map['userId'],
     );
   }
 
   @override
   String toString() {
-    return 'User{id: $id, name: $name, value: $value, type: $type, userId: $userId}';
+    return 'User{id: $id, name: $name, value: $value, userId: $userId}';
   }
 }
