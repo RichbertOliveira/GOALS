@@ -19,14 +19,6 @@ class ExpensesDb {
     db.collection("users/${expense.userId}/expenses")
         .add(expenseObject)
         .then((DocumentReference doc) => print('DocumentSnapshot added with ID: ${doc.id}'));
-
-
-    // int returnInsert = await db.insert(
-    //     "expenses",
-    //     expense.toMap()
-    // );
-
-    // return returnInsert;
   }
 
   updateExpenses(int id, Map<String, dynamic> expenses, Database db) async {
@@ -52,13 +44,34 @@ class ExpensesDb {
     return returnDelete;
   }
 
-  findAllExpensesByType(String type, int userId, Database database) async {
-    final List<Map<String, dynamic>> expenses = await database.query(
-      'expenses',
-      where: "type = ?",
-      whereArgs: [type],
-    );
+  findAllExpensesByType(String type, String userId) async {
+    final db = FirebaseFirestore.instance;
 
+    final expenses = [];
+    await db.collection("users/${userId}/expenses")
+        .where("type", isEqualTo: type)
+        .get().then((event) {
+      for (var doc in event.docs) {
+        final data = doc.data() as Map;
+        // final data = Map<String, dynamic>.from(doc.data() as Map);
+        expenses.add({
+          "id": doc.id,
+          "name": data['name'],
+          "value": data['value'],
+          "type": data['type'],
+          "frequency": data['frequency'],
+        });
+      }
+    });
+
+
+    // final List<Map<String, dynamic>> expenses = await database.query(
+    //   'expenses',
+    //   where: "type = ?",
+    //   whereArgs: [type],
+    // );
+
+    print(expenses);
     return expenses;
   }
 

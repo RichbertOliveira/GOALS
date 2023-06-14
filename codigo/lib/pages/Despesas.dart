@@ -47,10 +47,10 @@ class _DespesasState extends State<Despesas> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     Database database = await DatabaseHelper.createDatabase();
 
-    var userId = prefs.getInt('userId');
+    var userId = prefs.getString('userId');
     var totalValue = 0.0;
 
-    var expenses = await expensesFile.findAllExpensesByType(type, userId!, database);
+    var expenses = await expensesFile.findAllExpensesByType(type, userId!);
 
     for(var i = 0; i < expenses.length; i++) {
       totalValue += expenses[i]['value'];
