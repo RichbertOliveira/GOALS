@@ -42,6 +42,25 @@ class GoalsEdit extends StatelessWidget {
     await goalsFile.deleteGoals(id, userId);
   }
 
+  Future<void> injetarGoal(String acao) async {
+    final GoalsDb goalsFile = GoalsDb();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    double injetar = double.parse(insertController.text);
+    if (acao == "add") injetar = injetar;
+    if (acao == "remove") injetar = -injetar;
+
+    var goal = Goals(
+      id: id,
+      name: titleController.text,
+      value: double.parse(desiredController.text),
+      stored: savedAmount + injetar,
+      userId: prefs.getString('userId')!,
+    );
+
+    await goalsFile.updateGoals(goal);
+  }
+
   @override
   Widget build(BuildContext context) {
     initState();
@@ -138,13 +157,15 @@ class GoalsEdit extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await injetarGoal("remove");
                     Navigator.pop(context);
                   },
                   child: const Text('Retirar'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await injetarGoal("add");
                     Navigator.pop(context);
                   },
                   child: const Text('Guardar'),
