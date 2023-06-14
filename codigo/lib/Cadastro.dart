@@ -57,22 +57,6 @@ class _CadastroState extends State<Cadastro> {
           _mensageError = "Ocorreu um erro inesperado";
         });
       }
-
-
-      // User? user = await UserDAO.getUserByEmail(_email);
-      // if(user == null && _password == _conformPassword){
-      //   User newUser = User(id: await UserDAO.getLastId(), name: _name, email: _email, password: _password);
-      //   UserDAO.insertUser(newUser);
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(builder: (context) => Login()),
-      //   );
-      // }
-      // else{
-      //   setState(() {
-      //     _mensageError = "Usuário já existente";
-      //   });
-      // }
     }
   }
 

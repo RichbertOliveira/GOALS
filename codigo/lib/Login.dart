@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:goals/database/DatabaseHelper.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:goals/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Cadastro.dart';
-import 'database/UserDAO.dart';
-import 'model/User.dart';
+// import 'database/UserDAO.dart';
+// import 'model/User.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -22,21 +24,32 @@ class _LoginState extends State<Login> {
   String _mensageError = "";
 
   void _formSubmit() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     if (_formKey.currentState!.validate()) {
-      User? user = await UserDAO.getUserByEmail(_email);
-      if (user == null) {
-        setState(() {
-          _mensageError = "Verifique seu e-mail e senha";
-        });
-      } else if (user.email == _email && user.password == _password) {
-        var loggedUser = prefs.setInt('userId', user.id);
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      try {
+        final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+
+        final userId = credential.user?.uid ?? "";
+        var loggedUser = prefs.setString('userId', userId);
 
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Inicio()),
-        );
+            context,
+            MaterialPageRoute(builder: (context) => Inicio()),
+          );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          setState(() {
+            _mensageError = 'O usuário não foi encontrado';
+          });
+        } else if (e.code == 'wrong-password') {
+          setState(() {
+            _mensageError = 'Verifique seu e-mail e senha';
+          });
+        }
       }
     } else {
       setState(() {
@@ -88,7 +101,7 @@ class _LoginState extends State<Login> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
+                    onChanged: (value) {
                       _email = value!;
                     },
                   ), // Email
@@ -105,7 +118,7 @@ class _LoginState extends State<Login> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
+                    onChanged: (value) {
                       _password = value!;
                     },
                   ), // Password
