@@ -1,7 +1,8 @@
 class Goals {
-  final int? id;
+  final String? id;
   final String name;
   final double value;
+  final double? stored;
   final String userId;
 
   const Goals({
@@ -9,6 +10,7 @@ class Goals {
     required this.name,
     required this.value,
     required this.userId,
+    this.stored,
   });
 
   Map<String, dynamic> toMap() {

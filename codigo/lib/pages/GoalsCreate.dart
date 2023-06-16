@@ -16,7 +16,6 @@ class GoalsCreate extends StatelessWidget {
   final valueController = TextEditingController();
 
   void saveGoal(String name, double value) async {
-    print('caiu 1');
     // Database database = await DatabaseHelper.createDatabase();
     final GoalsDb goalsFile = GoalsDb();
     final SharedPreferences prefs = await SharedPreferences.getInstance();

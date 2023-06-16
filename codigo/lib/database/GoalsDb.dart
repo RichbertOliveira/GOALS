@@ -21,27 +21,24 @@ class GoalsDb {
         .then((DocumentReference doc) => print('DocumentSnapshot added with ID: ${doc.id}'));
   }
 
-  updateGoals(int id, Map<String, dynamic> goals, Database db) async {
+  updateGoals(Goals goal) async {
+    final db = FirebaseFirestore.instance;
+    final goalObject = <String, dynamic>{
+      "name": goal.name,
+      "value": goal.value,
+      "stored": goal.stored,
+    };
 
-    int returnSave = await db.update(
-        "goals",
-        goals,
-        where: "id = ?",
-        whereArgs: [id]
-    );
-
-    return returnSave;
+    db.collection("users/${goal.userId}/goals")
+        .doc(goal.id)
+        .set(goalObject, SetOptions(merge: true));
   }
 
-  deleteGoals(int id, Database db) async {
-
-    int returnDelete = await db.delete(
-      "goals",
-      where: "id = ?",
-      whereArgs: [id],
-    );
-
-    return returnDelete;
+  deleteGoals(String id, String userId) async {
+    final db = FirebaseFirestore.instance;
+    await db.collection("users/$userId/goals")
+      .doc(id)
+      .delete();
   }
 
   searchGoalsByUser(String userId) async {

@@ -55,37 +55,42 @@ class _GoalsState extends State<Goals> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: goals.length+1,
-      shrinkWrap: true,
-      itemBuilder: (BuildContext context, int index) {
-        if(index < goals.length) {
-          final goal = goals[index];
-          return GoalCard(
-              id: index,
-              title: goal['name'],
-              savedAmount: goal['stored'],
-              desiredAmount: goal['value'],
-          );
-        } else {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                style: raisedButtonStyle,
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => GoalsCreate())
-                  ).then((value) => loadGoals());
-                },
-                child: const Icon(Icons.add),
-              )
-            ],
-          );
-        }
-      },
+    return Scrollable(
+      viewportBuilder: (BuildContext context, ViewportOffset offset) {
+        return ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: goals.length+1,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            if(index < goals.length) {
+              final goal = goals[index];
+              return GoalCard(
+                  id: goal['id'],
+                  title: goal['name'],
+                  savedAmount: goal['stored'],
+                  desiredAmount: goal['value'],
+                  reload: loadGoals,
+              );
+            } else {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ElevatedButton(
+                    style: raisedButtonStyle,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GoalsCreate())
+                      ).then((value) => loadGoals());
+                    },
+                    child: const Icon(Icons.add),
+                  )
+                ],
+              );
+            }
+          },
+        );
+      }
     );
   }
 }
@@ -96,16 +101,20 @@ class _GoalsState extends State<Goals> {
 
 
 class GoalCard extends StatelessWidget {
-  final int id;
+  final String id;
   final String title;
   final double savedAmount;
   final double desiredAmount;
+  final Function? reload;
 
-  const GoalCard(
-      {super.key, required this.id,
-        required this.title,
-        required this.savedAmount,
-        required this.desiredAmount});
+  const GoalCard({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.savedAmount,
+    required this.desiredAmount,
+    this.reload,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +123,13 @@ class GoalCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => GoalsEdit())
-        );
+            MaterialPageRoute(builder: (context) => GoalsEdit(
+                id: id,
+                title: title,
+                desiredAmount: desiredAmount,
+                savedAmount: savedAmount,
+            ))
+        ).then((value) => reload!() );
       },
       child: Card(
         color: Colors.white,

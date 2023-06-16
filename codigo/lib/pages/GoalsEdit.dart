@@ -10,10 +10,60 @@ import '../database/DatabaseHelper.dart';
 import '../database/GoalsDb.dart';
 
 class GoalsEdit extends StatelessWidget {
-  GoalsEdit({super.key});
+  final String id;
+  final String title;
+  final double savedAmount;
+  final double desiredAmount;
+
+  final titleController = TextEditingController();
+  final savedAmountController = TextEditingController();
+  final desiredController = TextEditingController();
+  final insertController = TextEditingController();
+
+  GoalsEdit({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.desiredAmount,
+    required this.savedAmount,
+  });
+
+  void initState() {
+    titleController.text = title;
+    savedAmountController.text = savedAmount.toString();
+    desiredController.text = desiredAmount.toString();
+  }
+
+  Future<void> apagarGoal() async {
+    final GoalsDb goalsFile = GoalsDb();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final userId = prefs.getString('userId') ?? "";
+    await goalsFile.deleteGoals(id, userId);
+  }
+
+  Future<void> injetarGoal(String acao) async {
+    final GoalsDb goalsFile = GoalsDb();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    double injetar = double.parse(insertController.text);
+    if (acao == "add") injetar = injetar;
+    if (acao == "remove") injetar = -injetar;
+
+    var goal = Goals(
+      id: id,
+      name: titleController.text,
+      value: double.parse(desiredController.text),
+      stored: savedAmount + injetar,
+      userId: prefs.getString('userId')!,
+    );
+
+    await goalsFile.updateGoals(goal);
+  }
 
   @override
   Widget build(BuildContext context) {
+    initState();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -27,7 +77,8 @@ class GoalsEdit extends StatelessWidget {
               margin: const EdgeInsets.all(10.0),
               color: Colors.white,
               child: TextFormField(
-                initialValue: "Viagem para Disney",
+                // initialValue: title,
+                controller: titleController,
                 style: const TextStyle(fontSize: 15, color: Colors.black),
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
@@ -49,8 +100,9 @@ class GoalsEdit extends StatelessWidget {
               margin: const EdgeInsets.all(10.0),
               color: Colors.white,
               child: TextFormField(
-                initialValue: "2500.89",
+                // initialValue: desiredAmount.toString(),
                 keyboardType: TextInputType.number,
+                controller: desiredController,
                 style: const TextStyle(fontSize: 15, color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: "Valor do GOAL: ",
@@ -71,8 +123,9 @@ class GoalsEdit extends StatelessWidget {
               margin: const EdgeInsets.all(10.0),
               color: Colors.white,
               child: TextFormField(
-                initialValue: "1500.00",
+                initialValue: savedAmount.toString(),
                 keyboardType: TextInputType.number,
+                // controller: savedAmountController,
                 readOnly: true,
                 style: const TextStyle(fontSize: 15, color: Colors.black),
                 decoration: const InputDecoration(
@@ -88,6 +141,7 @@ class GoalsEdit extends StatelessWidget {
               color: Colors.white,
               child: TextFormField(
                 keyboardType: TextInputType.number,
+                controller: insertController,
                 style: const TextStyle(fontSize: 15, color: Colors.black),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -103,13 +157,15 @@ class GoalsEdit extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await injetarGoal("remove");
                     Navigator.pop(context);
                   },
                   child: const Text('Retirar'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await injetarGoal("add");
                     Navigator.pop(context);
                   },
                   child: const Text('Guardar'),
@@ -128,7 +184,8 @@ class GoalsEdit extends StatelessWidget {
                   child: const Text('Cancelar'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    await apagarGoal();
                     Navigator.pop(context);
                   },
                   child: const Text('Deletar Goal'),
